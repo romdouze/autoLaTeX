@@ -13,7 +13,6 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JTextArea;
-import ngr.KiKi.autolatex.AMCAutoLateX;
 import ngr.KiKi.autolatex.data.Question;
 
 /**
@@ -22,19 +21,19 @@ import ngr.KiKi.autolatex.data.Question;
  */
 public class QuestionRenderer extends JTextArea
 {
-
+	
 	private final int id;
 	private final Question question;
-	private final AMCAutoLateX parent;
-
-	public QuestionRenderer (AMCAutoLateX p, Question q, int i)
+	private final JFrameMain parent;
+	
+	public QuestionRenderer (JFrameMain p, Question q, int i)
 	{
 		super ();
-
+		
 		parent = p;
 		question = q;
 		id = i;
-
+		
 		setText (id + " - " + question.toString ());
 		setLineWrap (true);
 		setWrapStyleWord (true);
@@ -43,22 +42,22 @@ public class QuestionRenderer extends JTextArea
 		setRows (2);
 		setEditable (false);
 		setCursor (new Cursor (Cursor.HAND_CURSOR));
-
+		
 		addMouseListener (new MouseAdapter ()
 		{
-
+			
 			@Override
 			public void mouseClicked (MouseEvent me)
 			{
-				String text = getText ();
+				parent.switchQuestionPanel ((QuestionRenderer) me.getSource ());
 			}
-
+			
 			@Override
 			public void mouseEntered (MouseEvent me)
 			{
 				setBackground (Color.LIGHT_GRAY);
 			}
-
+			
 			@Override
 			public void mouseExited (MouseEvent me)
 			{
@@ -66,12 +65,22 @@ public class QuestionRenderer extends JTextArea
 			}
 		});
 	}
-
+	
+	public void updateText ()
+	{
+		setText (id + " - " + question.toString ());
+	}
+	
+	public void updateColor ()
+	{
+		setForeground (parent.getGroups ().get (question.getGroup ()));
+	}
+	
 	public Question getQuestion ()
 	{
 		return question;
 	}
-
+	
 	@Override
 	public Dimension getPreferredSize ()
 	{

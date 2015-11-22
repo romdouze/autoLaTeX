@@ -28,9 +28,11 @@ public class Question
 		answers = new ArrayList<> ();
 	}
 
-	public void addAnswer (String a, boolean b)
+	public Answer addAnswer (String a, boolean b)
 	{
-		answers.add (new Answer (a, b));
+		Answer answer = new Answer (a, b);
+		answers.add (answer);
+		return answer;
 	}
 
 	public String getText ()
