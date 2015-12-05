@@ -6,7 +6,16 @@
 package ngr.KiKi.autolatex.views;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
 import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -15,6 +24,7 @@ import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
 import ngr.KiKi.autolatex.data.Answer;
 import ngr.KiKi.autolatex.data.Question;
+import ngr.KiKi.autolatex.utils.Utils;
 
 /**
  *
@@ -25,6 +35,7 @@ public class QuestionPanel extends javax.swing.JPanel
 
 	private final Question question;
 	private final JFrameMain parent;
+	private boolean init;
 
 	/**
 	 * Creates new form QuestionPanel
@@ -32,11 +43,14 @@ public class QuestionPanel extends javax.swing.JPanel
 	public QuestionPanel (JFrameMain p, Question q)
 	{
 		initComponents ();
+		init = true;
 
 		question = q;
 		parent = p;
 
 		init ();
+
+		init = false;
 	}
 
 	private void init ()
@@ -65,6 +79,8 @@ public class QuestionPanel extends javax.swing.JPanel
 
 		});
 
+		jComboBoxType.setSelectedItem (question.getType ().toString ());
+
 		initAnswers ();
 
 		initGroups ();
@@ -74,12 +90,15 @@ public class QuestionPanel extends javax.swing.JPanel
 
 	private void initGroups ()
 	{
+		jComboBoxGroup.removeAllItems ();
 		Map<String, Color> groups = parent.getGroups ();
-		groups.keySet ().stream ().forEach ((g)->{
+		groups.keySet ().stream ().forEach ((g) ->
+		{
 			jComboBoxGroup.addItem (g);
 		});
 		MyColorComboBoxRenderer renderer = new MyColorComboBoxRenderer (jComboBoxGroup);
 		renderer.setValues (groups);
+		jComboBoxGroup.setSelectedItem (question.getGroup ());
 		jComboBoxGroup.setRenderer (renderer);
 	}
 
@@ -112,9 +131,13 @@ public class QuestionPanel extends javax.swing.JPanel
 
 	private void updateValues ()
 	{
-		question.setGroup ((String) jComboBoxGroup.getSelectedItem ());
-		question.setText (jTextAreaText.getText ());
-		parent.updateQR ();
+		if (!init)
+		{
+			question.setGroup ((String) jComboBoxGroup.getSelectedItem ());
+			question.setText (jTextAreaText.getText ());
+			question.setType (Question.TYPE.getType ((String) jComboBoxType.getSelectedItem ()));
+			parent.updateQR ();
+		}
 	}
 
 	/**
@@ -129,11 +152,15 @@ public class QuestionPanel extends javax.swing.JPanel
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaText = new javax.swing.JTextArea();
         jPanelConfig = new javax.swing.JPanel();
+        jComboBoxType = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
+        jButtonAddPicture = new javax.swing.JButton();
         jScrollPaneAnswers = new javax.swing.JScrollPane();
         jPanelAnswers = new javax.swing.JPanel();
         jButtonAddAnswer = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jComboBoxGroup = new javax.swing.JComboBox();
+        jButtonAddCategory = new javax.swing.JButton();
 
         setMinimumSize(new java.awt.Dimension(389, 168));
         setPreferredSize(new java.awt.Dimension(389, 168));
@@ -146,15 +173,41 @@ public class QuestionPanel extends javax.swing.JPanel
 
         jPanelConfig.setBorder(javax.swing.BorderFactory.createTitledBorder("Configuration"));
 
+        jComboBoxType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Simple", "Multiple", "Ouverte" }));
+        jComboBoxType.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jComboBoxTypeActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Type");
+
+        jButtonAddPicture.setText("Ajouter photo");
+
         javax.swing.GroupLayout jPanelConfigLayout = new javax.swing.GroupLayout(jPanelConfig);
         jPanelConfig.setLayout(jPanelConfigLayout);
         jPanelConfigLayout.setHorizontalGroup(
             jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(jPanelConfigLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonAddPicture)
+                .addContainerGap())
         );
         jPanelConfigLayout.setVerticalGroup(
             jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(jPanelConfigLayout.createSequentialGroup()
+                .addGroup(jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBoxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1))
+                    .addComponent(jButtonAddPicture))
+                .addGap(0, 77, Short.MAX_VALUE))
         );
 
         jScrollPaneAnswers.setBorder(javax.swing.BorderFactory.createTitledBorder("Réponses"));
@@ -175,7 +228,7 @@ public class QuestionPanel extends javax.swing.JPanel
             jPanelAnswersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAnswersLayout.createSequentialGroup()
                 .addComponent(jButtonAddAnswer)
-                .addGap(0, 360, Short.MAX_VALUE))
+                .addGap(0, 405, Short.MAX_VALUE))
         );
         jPanelAnswersLayout.setVerticalGroup(
             jPanelAnswersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -196,6 +249,16 @@ public class QuestionPanel extends javax.swing.JPanel
             }
         });
 
+        jButtonAddCategory.setText("+");
+        jButtonAddCategory.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButtonAddCategory.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonAddCategoryActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -203,13 +266,16 @@ public class QuestionPanel extends javax.swing.JPanel
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jComboBoxGroup, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonAddCategory))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBoxGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAddCategory))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -218,7 +284,7 @@ public class QuestionPanel extends javax.swing.JPanel
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPaneAnswers)
+            .addComponent(jScrollPaneAnswers, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
             .addComponent(jScrollPane1)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -231,17 +297,14 @@ public class QuestionPanel extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPaneAnswers, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanelConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBoxGroupActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jComboBoxGroupActionPerformed
     {//GEN-HEADEREND:event_jComboBoxGroupActionPerformed
-		String selected = (String) jComboBoxGroup.getSelectedItem ();
-		if (selected.equals ("Nouvelle catégorie"))
-		{
 
-		}
 		updateValues ();
     }//GEN-LAST:event_jComboBoxGroupActionPerformed
 
@@ -255,10 +318,73 @@ public class QuestionPanel extends javax.swing.JPanel
 		updateDisplay ();
     }//GEN-LAST:event_jButtonAddAnswerActionPerformed
 
+    private void jButtonAddCategoryActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAddCategoryActionPerformed
+    {//GEN-HEADEREND:event_jButtonAddCategoryActionPerformed
+
+		JPanel panel = new JPanel ();
+		JDialog dialog = new JDialog (parent, "Nouvelle catégorie", true);
+
+		JTextField tf = new JTextField ("Nouvelle catégorie...");
+		DefaultComboBoxModel cbm = new DefaultComboBoxModel ();
+		Utils.colors.keySet ().stream ().forEach ((s) ->
+		{
+			cbm.addElement (s);
+		});
+		JComboBox cols = new JComboBox (cbm);
+		cols.addActionListener ((ActionEvent ae) ->
+		{
+			tf.setForeground (Utils.colors.get ((String) cols.getSelectedItem ()));
+		});
+		cols.setSelectedItem ("Noir");
+		panel.add (tf);
+		panel.add (cols);
+
+		JButton ok = new JButton ("OK");
+		JButton cancel = new JButton ("Annuler");
+
+		ok.addActionListener ((ActionEvent ae) ->
+		{
+			if (tf.getText ().equals ("Nouvelle catégorie...") || tf.getText ().isEmpty ())
+				dialog.dispose ();
+
+			String newGroup = tf.getText ();
+			parent.addGroup (newGroup, Utils.colors.get ((String) cols.getSelectedItem ()));
+			initGroups ();
+			jComboBoxGroup.setSelectedItem (newGroup);
+			updateValues ();
+			dialog.dispose ();
+		});
+		cancel.addActionListener ((ActionEvent ae) ->
+		{
+			dialog.dispose ();
+		});
+
+		JButton[] buttons =
+		{
+			ok, cancel
+		};
+		JOptionPane optionPane = new JOptionPane (panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.YES_NO_OPTION, null, buttons, ok);
+
+		dialog.getContentPane ().add (optionPane);
+		dialog.setLocationRelativeTo (parent);
+		dialog.pack ();
+		dialog.setVisible (true);
+    }//GEN-LAST:event_jButtonAddCategoryActionPerformed
+
+    private void jComboBoxTypeActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jComboBoxTypeActionPerformed
+    {//GEN-HEADEREND:event_jComboBoxTypeActionPerformed
+		if (!((String) jComboBoxType.getSelectedItem ()).toUpperCase ().equals (question.getType ().toString ()))
+			updateValues ();
+    }//GEN-LAST:event_jComboBoxTypeActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddAnswer;
+    private javax.swing.JButton jButtonAddCategory;
+    private javax.swing.JButton jButtonAddPicture;
     private javax.swing.JComboBox jComboBoxGroup;
+    private javax.swing.JComboBox jComboBoxType;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelAnswers;
     private javax.swing.JPanel jPanelConfig;

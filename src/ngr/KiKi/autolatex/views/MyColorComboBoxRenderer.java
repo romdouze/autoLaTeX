@@ -7,7 +7,9 @@ package ngr.KiKi.autolatex.views;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -23,8 +25,8 @@ public class MyColorComboBoxRenderer extends JPanel implements ListCellRenderer
 {
 
 	private static final long serialVersionUID = -1L;
-	private Color[] colors;
-	private String[] strings;
+	private List<Color> colors;
+	private List<String> strings;
 	private Map<String, Color> values;
 
 	JPanel textPanel;
@@ -44,10 +46,20 @@ public class MyColorComboBoxRenderer extends JPanel implements ListCellRenderer
 	public void setValues (Map<String, Color> v)
 	{
 		values = v;
-		strings = values.keySet ().toArray (new String[values.keySet ().size ()]);
-		colors = new Color[strings.length];
-		for (int i = 0; i < strings.length; i++)
-			colors[i] = values.get (strings[i]);
+		strings = new ArrayList<> (values.keySet ());
+		colors = new ArrayList<> ();
+		strings.stream ().forEach ((s) ->
+		{
+			colors.add (values.get (s));
+		});
+	}
+
+	public void addValue (String v, Color c)
+	{
+		values.put (v, c);
+
+		colors.add (c);
+		strings.add (v);
 	}
 
 	public Map<String, Color> getValues ()
@@ -55,22 +67,22 @@ public class MyColorComboBoxRenderer extends JPanel implements ListCellRenderer
 		return values;
 	}
 
-	public void setColor (Color[] col)
+	public void setColor (List<Color> col)
 	{
 		colors = col;
 	}
 
-	public void setStrings (String[] str)
+	public void setStrings (List<String> str)
 	{
 		strings = str;
 	}
 
-	public Color[] getColors ()
+	public List<Color> getColors ()
 	{
 		return colors;
 	}
 
-	public String[] getStrings ()
+	public List<String> getStrings ()
 	{
 		return strings;
 	}
@@ -85,7 +97,7 @@ public class MyColorComboBoxRenderer extends JPanel implements ListCellRenderer
 		else
 			setBackground (Color.WHITE);
 
-		if (colors.length != strings.length)
+		if (colors.size () != strings.size ())
 		{
 			System.out.println ("colors.length does not equal strings.length");
 			return this;
@@ -105,7 +117,7 @@ public class MyColorComboBoxRenderer extends JPanel implements ListCellRenderer
 
 		text.setText (value.toString ());
 		if (index > -1)
-			text.setForeground (colors[index]);
+			text.setForeground (colors.get (index));
 		return text;
 	}
 }

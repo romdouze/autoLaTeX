@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,6 +7,7 @@
 package ngr.KiKi.autolatex.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,6 +27,7 @@ public class Question
 	{
 		text = txt;
 		type = t;
+		group = "Défaut";
 		answers = new ArrayList<> ();
 	}
 
@@ -94,6 +97,24 @@ public class Question
 	public static enum TYPE
 	{
 
-		SIMPLE, MULTIPLE, OPEN
+		SIMPLE ("Simple"), MULTIPLE ("Multiple"), OPEN ("Ouverte");
+
+		private final String stringValue;
+
+		private TYPE (final String s)
+		{
+			stringValue = s;
+		}
+
+		public static TYPE getType (String s)
+		{
+			return Arrays.stream (TYPE.values ()).filter (t -> t.toString ().equals (s)).findFirst ().get ();
+		}
+
+		@Override
+		public String toString ()
+		{
+			return stringValue;
+		}
 	};
 }

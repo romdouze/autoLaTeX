@@ -9,17 +9,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
@@ -54,45 +55,90 @@ public class JFrameMain extends javax.swing.JFrame
 		questions = new ArrayList<> ();
 		groups = new HashMap<> ();
 		groups.put ("Défaut", Color.BLACK);
-		groups.put ("Jaune", Color.RED);
 
-		for (int i = 0; i < 15; i++)
+		for (int i = 0; i < 5; i++)
 		{
-			Question q = new Question ("Quelle est la couleur du cheval blanc d'Henry IV ? C'est la question ultime", Question.TYPE.OPEN);
+			Question q = new Question ("Quelle était la couleur du cheval blanc d'Henry " + i + " ? C'est la question ultime", Question.TYPE.OPEN);
+			q.setType (Question.TYPE.SIMPLE);
 			q.addAnswer ("Faut voir...", false);
 			q.addAnswer ("Beige", false);
 			questions.add (q);
 		}
 
 		initQuestions ();
-		formulas ();
+//		formulas ();
 	}
 
 	private void initQuestions ()
 	{
+		jPanelQuestionsList.removeAll ();
 		jPanelQuestionsList.setLayout (new MigLayout (new LC ().fillX ().hideMode (3)));
 		for (int i = 0; i < questions.size (); i++)
 		{
+			JPanel panel = new JPanel (new BorderLayout ());
 			Question q = questions.get (i);
 			QuestionRenderer qr = new QuestionRenderer (this, q, i + 1);
-			jPanelQuestionsList.add (qr, new CC ().wrap ().growX ());
+			JButton deleteQuestion = new JButton ("X");
+			deleteQuestion.addActionListener ((ActionEvent ae) ->
+			{
+				questions.remove (q);
+				initQuestions ();
+				switchQuestionPanel (null);
+			});
+
+			panel.add (qr, BorderLayout.CENTER);
+			panel.add (deleteQuestion, BorderLayout.EAST);
+
+			JPanel upDown = new JPanel (new BorderLayout ());
+			JButton up = new JButton ("\u25B2");
+			up.setEnabled (i != 0);
+			JButton down = new JButton ("\u25BC");
+			down.setEnabled (i != questions.size () - 1);
+			up.addActionListener ((ActionEvent ae) ->
+			{
+				int index = questions.indexOf (q);
+				questions.remove (q);
+				questions.add (index - 1, q);
+				initQuestions ();
+			});
+			down.addActionListener ((ActionEvent ae) ->
+			{
+				int index = questions.indexOf (q);
+				questions.remove (q);
+				questions.add (index + 1, q);
+				initQuestions ();
+			});
+
+			upDown.add (up, BorderLayout.NORTH);
+			upDown.add (down, BorderLayout.SOUTH);
+			panel.add (upDown, BorderLayout.WEST);
+
+			jPanelQuestionsList.add (panel, new CC ().wrap ().growX ());
 		}
+		jPanelQuestionsList.add (jButtonNewQuestion);
 
 		jPanelQuestion.setLayout (new BorderLayout ());
+
+		repaint ();
 	}
 
 	public void updateQR ()
 	{
-		selectedRenderer.updateColor();
+		selectedRenderer.updateColor ();
 		selectedRenderer.updateText ();
 	}
 
 	public void switchQuestionPanel (QuestionRenderer qr)
 	{
-		Question question = qr.getQuestion ();
-		selectedRenderer = qr;
-		jPanelQuestion.removeAll ();
-		jPanelQuestion.add (new QuestionPanel (this, question));
+		if (qr == null)
+			jPanelQuestion.removeAll ();
+		else
+		{
+			Question question = qr.getQuestion ();
+			selectedRenderer = qr;
+			jPanelQuestion.removeAll ();
+			jPanelQuestion.add (new QuestionPanel (this, question));
+		}
 
 		repaint ();
 	}
@@ -205,8 +251,9 @@ public class JFrameMain extends javax.swing.JFrame
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jPanelQuestions = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPaneQuestionsList = new javax.swing.JScrollPane();
         jPanelQuestionsList = new javax.swing.JPanel();
+        jButtonNewQuestion = new javax.swing.JButton();
         jPanelQuestion = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -383,7 +430,7 @@ public class JFrameMain extends javax.swing.JFrame
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField5)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -509,26 +556,41 @@ public class JFrameMain extends javax.swing.JFrame
 
         jTabbedPaneMain.addTab("Détails du contrôle", jPanelDetails);
 
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPaneQuestionsList.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        jButtonNewQuestion.setText("+");
+        jButtonNewQuestion.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonNewQuestionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelQuestionsListLayout = new javax.swing.GroupLayout(jPanelQuestionsList);
         jPanelQuestionsList.setLayout(jPanelQuestionsListLayout);
         jPanelQuestionsListLayout.setHorizontalGroup(
             jPanelQuestionsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 366, Short.MAX_VALUE)
+            .addGroup(jPanelQuestionsListLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonNewQuestion, javax.swing.GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanelQuestionsListLayout.setVerticalGroup(
             jPanelQuestionsListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 496, Short.MAX_VALUE)
+            .addGroup(jPanelQuestionsListLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jButtonNewQuestion)
+                .addContainerGap(462, Short.MAX_VALUE))
         );
 
-        jScrollPane2.setViewportView(jPanelQuestionsList);
+        jScrollPaneQuestionsList.setViewportView(jPanelQuestionsList);
 
         javax.swing.GroupLayout jPanelQuestionLayout = new javax.swing.GroupLayout(jPanelQuestion);
         jPanelQuestion.setLayout(jPanelQuestionLayout);
         jPanelQuestionLayout.setHorizontalGroup(
             jPanelQuestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 389, Short.MAX_VALUE)
+            .addGap(0, 434, Short.MAX_VALUE)
         );
         jPanelQuestionLayout.setVerticalGroup(
             jPanelQuestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -540,14 +602,14 @@ public class JFrameMain extends javax.swing.JFrame
         jPanelQuestionsLayout.setHorizontalGroup(
             jPanelQuestionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelQuestionsLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 368, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPaneQuestionsList, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelQuestion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanelQuestionsLayout.setVerticalGroup(
             jPanelQuestionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2)
+            .addComponent(jScrollPaneQuestionsList)
             .addComponent(jPanelQuestion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -577,8 +639,16 @@ public class JFrameMain extends javax.swing.JFrame
 		// TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox4ActionPerformed
 
+    private void jButtonNewQuestionActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonNewQuestionActionPerformed
+    {//GEN-HEADEREND:event_jButtonNewQuestionActionPerformed
+		Question q = new Question ("Nouvelle question", Question.TYPE.SIMPLE);
+		questions.add (q);
+		initQuestions ();
+    }//GEN-LAST:event_jButtonNewQuestionActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonNewQuestion;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JCheckBox jCheckBox3;
@@ -617,7 +687,7 @@ public class JFrameMain extends javax.swing.JFrame
     private javax.swing.JPanel jPanelQuestions;
     private javax.swing.JPanel jPanelQuestionsList;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPaneQuestionsList;
     private javax.swing.JTabbedPane jTabbedPaneMain;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
