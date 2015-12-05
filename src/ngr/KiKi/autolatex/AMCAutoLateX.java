@@ -5,6 +5,9 @@
  */
 package ngr.KiKi.autolatex;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.WindowConstants;
 import ngr.KiKi.autolatex.views.JFrameMain;
 
 /**
@@ -53,9 +56,31 @@ public class AMCAutoLateX
 		//</editor-fold>
 
 		/* Create and display the form */
+		JFrameMain frame = new JFrameMain ();
+		start (frame);
+	}
+
+	private static void start (JFrameMain frame)
+	{
 		java.awt.EventQueue.invokeLater (() ->
 		{
-			new JFrameMain ().setVisible (true);
+			frame.setDefaultCloseOperation (WindowConstants.DO_NOTHING_ON_CLOSE);
+			frame.addWindowListener (new WindowAdapter ()
+			{
+				@Override
+				public void windowClosing (WindowEvent e)
+				{
+					frame.exit ();
+				}
+			});
+			frame.setVisible (true);
 		});
+	}
+
+	public static void reset (JFrameMain frame)
+	{
+		frame.dispose ();
+		frame = new JFrameMain ();
+		start (frame);
 	}
 }
