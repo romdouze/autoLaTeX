@@ -32,7 +32,7 @@ import ngr.KiKi.autolatex.utils.Utils;
  */
 public class QuestionPanel extends javax.swing.JPanel
 {
-
+	
 	private final Question question;
 	private final JFrameMain parent;
 	private boolean init;
@@ -44,50 +44,50 @@ public class QuestionPanel extends javax.swing.JPanel
 	{
 		initComponents ();
 		init = true;
-
+		
 		question = q;
 		parent = p;
-
+		
 		init ();
-
+		
 		init = false;
 	}
-
+	
 	private void init ()
 	{
 		jTextAreaText.setText (question.toString ());
 		jTextAreaText.getDocument ().addDocumentListener (new DocumentListener ()
 		{
-
+			
 			@Override
 			public void insertUpdate (DocumentEvent de)
 			{
 				updateValues ();
 			}
-
+			
 			@Override
 			public void removeUpdate (DocumentEvent de)
 			{
 				updateValues ();
 			}
-
+			
 			@Override
 			public void changedUpdate (DocumentEvent de)
 			{
 				updateValues ();
 			}
-
+			
 		});
-
+		
 		jComboBoxType.setSelectedItem (question.getType ().toString ());
-
+		
 		initAnswers ();
-
+		
 		initGroups ();
-
+		
 		updateDisplay ();
 	}
-
+	
 	private void initGroups ()
 	{
 		jComboBoxGroup.removeAllItems ();
@@ -101,34 +101,34 @@ public class QuestionPanel extends javax.swing.JPanel
 		jComboBoxGroup.setSelectedItem (question.getGroup ());
 		jComboBoxGroup.setRenderer (renderer);
 	}
-
+	
 	private void initAnswers ()
 	{
 		jPanelAnswers.removeAll ();
 		jPanelAnswers.setLayout (new MigLayout (new LC ().fillX ().hideMode (3)));
-
+		
 		question.getAnswers ().stream ().forEach ((a) ->
 		{
 			jPanelAnswers.add (new AnswerPanel (this, a), new CC ().wrap ().growX ());
 		});
-
+		
 		jPanelAnswers.add (jButtonAddAnswer);
 	}
-
+	
 	public void removeAnswer (AnswerPanel ap)
 	{
 		question.getAnswers ().remove (ap.getAnswer ());
 		initAnswers ();
-
+		
 		updateDisplay ();
 	}
-
+	
 	private void updateDisplay ()
 	{
 		((TitledBorder) jScrollPaneAnswers.getBorder ()).setTitle (question.getAnswers ().size () + " réponses");
 		repaint ();
 	}
-
+	
 	private void updateValues ()
 	{
 		if (!init)
@@ -304,7 +304,7 @@ public class QuestionPanel extends javax.swing.JPanel
 
     private void jComboBoxGroupActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jComboBoxGroupActionPerformed
     {//GEN-HEADEREND:event_jComboBoxGroupActionPerformed
-
+		
 		updateValues ();
     }//GEN-LAST:event_jComboBoxGroupActionPerformed
 
@@ -314,16 +314,16 @@ public class QuestionPanel extends javax.swing.JPanel
 		jPanelAnswers.remove (jButtonAddAnswer);
 		jPanelAnswers.add (new AnswerPanel (this, newAnswer), new CC ().wrap ().growX ());
 		jPanelAnswers.add (jButtonAddAnswer);
-
+		
 		updateDisplay ();
     }//GEN-LAST:event_jButtonAddAnswerActionPerformed
 
     private void jButtonAddCategoryActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAddCategoryActionPerformed
     {//GEN-HEADEREND:event_jButtonAddCategoryActionPerformed
-
+		
 		JPanel panel = new JPanel ();
 		JDialog dialog = new JDialog (parent, "Nouvelle catégorie", true);
-
+		
 		JTextField tf = new JTextField ("Nouvelle catégorie...");
 		DefaultComboBoxModel cbm = new DefaultComboBoxModel ();
 		Utils.colors.keySet ().stream ().forEach ((s) ->
@@ -338,15 +338,15 @@ public class QuestionPanel extends javax.swing.JPanel
 		cols.setSelectedItem ("Noir");
 		panel.add (tf);
 		panel.add (cols);
-
+		
 		JButton ok = new JButton ("OK");
 		JButton cancel = new JButton ("Annuler");
-
+		
 		ok.addActionListener ((ActionEvent ae) ->
 		{
-			if (tf.getText ().equals ("Nouvelle catégorie...") || tf.getText ().isEmpty ())
+			if (tf.getText ().equals ("Nouvelle catégorie...") || tf.getText ().isEmpty () || parent.getGroups ().containsKey (tf.getText ()))
 				dialog.dispose ();
-
+			
 			String newGroup = tf.getText ();
 			parent.addGroup (newGroup, Utils.colors.get ((String) cols.getSelectedItem ()));
 			initGroups ();
@@ -358,13 +358,13 @@ public class QuestionPanel extends javax.swing.JPanel
 		{
 			dialog.dispose ();
 		});
-
+		
 		JButton[] buttons =
 		{
 			ok, cancel
 		};
 		JOptionPane optionPane = new JOptionPane (panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.YES_NO_OPTION, null, buttons, ok);
-
+		
 		dialog.getContentPane ().add (optionPane);
 		dialog.setLocationRelativeTo (parent);
 		dialog.pack ();

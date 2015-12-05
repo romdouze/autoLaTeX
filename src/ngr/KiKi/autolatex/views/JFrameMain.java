@@ -19,15 +19,17 @@ import java.util.List;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
 import ngr.KiKi.autolatex.AMCAutoLateX;
 import ngr.KiKi.autolatex.data.Question;
+import ngr.KiKi.autolatex.data.XMLHandler;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
@@ -55,6 +57,7 @@ public class JFrameMain extends javax.swing.JFrame
 
 	private void init ()
 	{
+		setTitle ("AMC - AutoLaTeX : " + jTextFieldTitle.getText ());
 		questions = new ArrayList<> ();
 		groups = new HashMap<> ();
 		groups.put ("Défaut", Color.BLACK);
@@ -66,6 +69,33 @@ public class JFrameMain extends javax.swing.JFrame
 			q.addAnswer ("Beige", false);
 			questions.add (q);
 		}
+
+		jTextFieldTitle.getDocument ().addDocumentListener (new DocumentListener ()
+		{
+
+			@Override
+			public void insertUpdate (DocumentEvent de)
+			{
+				updateTitle (jTextFieldTitle.getText ());
+			}
+
+			@Override
+			public void removeUpdate (DocumentEvent de)
+			{
+				updateTitle (jTextFieldTitle.getText ());
+			}
+
+			@Override
+			public void changedUpdate (DocumentEvent de)
+			{
+				updateTitle (jTextFieldTitle.getText ());
+			}
+
+			private void updateTitle (String t)
+			{
+				setTitle ("AMC - AutoLaTeX : " + t);
+			}
+		});
 
 		initQuestions ();
 //		formulas ();
@@ -206,7 +236,7 @@ public class JFrameMain extends javax.swing.JFrame
 		{
 			"Oui", "Non"
 		}, null) == JOptionPane.YES_OPTION)
-			System.exit (0);
+			dispose ();
 	}
 
 	/**
@@ -249,7 +279,7 @@ public class JFrameMain extends javax.swing.JFrame
         jLabel10 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        jTextFieldTitle = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jCheckBox3 = new javax.swing.JCheckBox();
@@ -414,7 +444,7 @@ public class JFrameMain extends javax.swing.JFrame
 
         jLabel18.setText("Barême questions multiples");
 
-        jTextField5.setText("Intitulé du devoir");
+        jTextFieldTitle.setText("Intitulé du devoir");
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(3);
@@ -448,7 +478,7 @@ public class JFrameMain extends javax.swing.JFrame
                                 .addComponent(jLabel4)))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField5)
+                            .addComponent(jTextFieldTitle)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -483,7 +513,7 @@ public class JFrameMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -653,6 +683,13 @@ public class JFrameMain extends javax.swing.JFrame
 
         jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemSave.setText("Enregistrer");
+        jMenuItemSave.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jMenuItemSaveActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemSave);
 
         jMenuItemExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
@@ -715,6 +752,11 @@ public class JFrameMain extends javax.swing.JFrame
 		AMCAutoLateX.reset (this);
     }//GEN-LAST:event_jMenuItemNewActionPerformed
 
+    private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItemSaveActionPerformed
+    {//GEN-HEADEREND:event_jMenuItemSaveActionPerformed
+        XMLHandler.XMLWriter ("output.xml", questions, groups);
+    }//GEN-LAST:event_jMenuItemSaveActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonNewQuestion;
@@ -770,8 +812,8 @@ public class JFrameMain extends javax.swing.JFrame
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextFieldTitle;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<amc-root>
+    <groups>
+        <group>
+            <name>Défaut</name>
+            <color>Noir</color>
+        </group>
+        <group>
+            <name>Histoire de France</name>
+            <color>Orange</color>
+        </group>
+    </groups>
+    <questions>
+        <question>
+            <text>Quelle était la couleur du cheval blanc d'Henry 0 ? C'est la question ultime</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <answers>
+                <answer>
+                    <text>Beige</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Quelle était la couleur du cheval blanc d'Henry 1 ? C'est la question ultime</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Histoire de France</group>
+            <answers>
+                <answer>
+                    <text>Faut voir...</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Beige</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Quelle était la couleur du cheval blanc d'Henry 2 ? C'est la question ultime</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <answers>
+                <answer>
+                    <text>Faut voir...</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Beige</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Quelle était la couleur du cheval blanc d'Henry 3 ? C'est la question ultime</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Histoire de France</group>
+            <answers>
+                <answer>
+                    <text>Faut voir...</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Beige</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Le dimanche uniquement</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Quelle était la couleur du cheval blanc d'Henry 4 ? C'est la question ultime</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <answers>
+                <answer>
+                    <text>Faut voir...</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Beige</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+    </questions>
+</amc-root>

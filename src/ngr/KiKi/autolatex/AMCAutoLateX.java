@@ -5,6 +5,7 @@
  */
 package ngr.KiKi.autolatex;
 
+import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.WindowConstants;
@@ -79,8 +80,10 @@ public class AMCAutoLateX
 
 	public static void reset (JFrameMain frame)
 	{
+		Point location = frame.getLocationOnScreen ();
 		frame.dispose ();
 		frame = new JFrameMain ();
+		frame.setLocation (location);
 		start (frame);
 	}
 }
