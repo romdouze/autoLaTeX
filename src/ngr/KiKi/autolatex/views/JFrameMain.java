@@ -29,6 +29,7 @@ import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
 import ngr.KiKi.autolatex.AMCAutoLateX;
 import ngr.KiKi.autolatex.data.Question;
+import ngr.KiKi.autolatex.data.Test;
 import ngr.KiKi.autolatex.data.XMLHandler;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
@@ -41,9 +42,8 @@ import org.scilab.forge.jlatexmath.TeXIcon;
 public class JFrameMain extends javax.swing.JFrame
 {
 
-	private List<Question> questions;
+	private Test test;
 	private QuestionRenderer selectedRenderer;
-	private Map<String, Color> groups;
 
 	/**
 	 * Creates new form AMCAutoLateX
@@ -52,14 +52,25 @@ public class JFrameMain extends javax.swing.JFrame
 	{
 		initComponents ();
 
+		setTemplate ();
 		init ();
 	}
 
-	private void init ()
+	public JFrameMain (Test t)
 	{
-		setTitle ("AMC - AutoLaTeX : " + jTextFieldTitle.getText ());
-		questions = new ArrayList<> ();
-		groups = new HashMap<> ();
+		initComponents ();
+
+		test = t;
+
+		init ();
+	}
+
+	private void setTemplate ()
+	{
+		test = new Test ();
+		List<Question> questions = new ArrayList<> ();
+		Map<String, Color> groups = new HashMap<> ();
+
 		groups.put ("Défaut", Color.BLACK);
 
 		for (int i = 0; i < 5; i++)
@@ -69,6 +80,14 @@ public class JFrameMain extends javax.swing.JFrame
 			q.addAnswer ("Beige", false);
 			questions.add (q);
 		}
+
+		test.setQuestions (questions);
+		test.setGroups (groups);
+	}
+
+	private void init ()
+	{
+		setTitle ("AMC - AutoLaTeX : " + jTextFieldTitle.getText ());
 
 		jTextFieldTitle.getDocument ().addDocumentListener (new DocumentListener ()
 		{
@@ -103,6 +122,8 @@ public class JFrameMain extends javax.swing.JFrame
 
 	private void initQuestions ()
 	{
+		List<Question> questions = test.getQuestions ();
+
 		jPanelQuestionsList.removeAll ();
 		jPanelQuestionsList.setLayout (new MigLayout (new LC ().fillX ().hideMode (3)));
 		for (int i = 0; i < questions.size (); i++)
@@ -178,12 +199,12 @@ public class JFrameMain extends javax.swing.JFrame
 
 	public void addGroup (String g, Color c)
 	{
-		groups.put (g, c);
+		test.getGroups ().put (g, c);
 	}
 
 	public Map<String, Color> getGroups ()
 	{
-		return groups;
+		return test.getGroups ();
 	}
 
 	private void formulas ()
@@ -237,6 +258,11 @@ public class JFrameMain extends javax.swing.JFrame
 			"Oui", "Non"
 		}, null) == JOptionPane.YES_OPTION)
 			dispose ();
+	}
+
+	public Test getTest ()
+	{
+		return test;
 	}
 
 	/**
@@ -679,6 +705,13 @@ public class JFrameMain extends javax.swing.JFrame
 
         jMenuItemOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItemOpen.setText("Ouvrir");
+        jMenuItemOpen.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jMenuItemOpenActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItemOpen);
 
         jMenuItemSave.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
@@ -737,7 +770,7 @@ public class JFrameMain extends javax.swing.JFrame
     private void jButtonNewQuestionActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonNewQuestionActionPerformed
     {//GEN-HEADEREND:event_jButtonNewQuestionActionPerformed
 		Question q = new Question ("Nouvelle question", Question.TYPE.SIMPLE);
-		questions.add (q);
+		test.getQuestions ().add (q);
 		initQuestions ();
     }//GEN-LAST:event_jButtonNewQuestionActionPerformed
 
@@ -754,8 +787,15 @@ public class JFrameMain extends javax.swing.JFrame
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItemSaveActionPerformed
     {//GEN-HEADEREND:event_jMenuItemSaveActionPerformed
-        XMLHandler.XMLWriter ("output.xml", questions, groups);
+		XMLHandler.XMLWriter ("output.xml", test);
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
+
+    private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItemOpenActionPerformed
+    {//GEN-HEADEREND:event_jMenuItemOpenActionPerformed
+		test = XMLHandler.XMLReader ("output.xml");
+
+		AMCAutoLateX.reload (this);
+    }//GEN-LAST:event_jMenuItemOpenActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -34,4 +34,9 @@ public class Utils
 			put ("Jaune", Color.YELLOW);
 		}
 	};
+
+	public static String getColor (Color color)
+	{
+		return Utils.colors.keySet ().stream ().filter (c -> Utils.colors.get (c) == color).findFirst ().get ();
+	}
 }

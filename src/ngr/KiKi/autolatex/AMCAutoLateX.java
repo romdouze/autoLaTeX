@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.WindowConstants;
+import ngr.KiKi.autolatex.data.Test;
 import ngr.KiKi.autolatex.views.JFrameMain;
 
 /**
@@ -83,6 +84,16 @@ public class AMCAutoLateX
 		Point location = frame.getLocationOnScreen ();
 		frame.dispose ();
 		frame = new JFrameMain ();
+		frame.setLocation (location);
+		start (frame);
+	}
+	
+	public static void reload(JFrameMain frame)
+	{
+		Point location = frame.getLocationOnScreen ();
+		Test test = frame.getTest();
+		frame.dispose ();
+		frame = new JFrameMain (test);
 		frame.setLocation (location);
 		start (frame);
 	}

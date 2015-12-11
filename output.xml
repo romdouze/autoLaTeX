@@ -6,8 +6,8 @@
             <color>Noir</color>
         </group>
         <group>
-            <name>Histoire de France</name>
-            <color>Orange</color>
+            <name>Catégorie du siècle</name>
+            <color>Gris clair</color>
         </group>
     </groups>
     <questions>
@@ -17,6 +17,11 @@
             <nb-lines>0</nb-lines>
             <group>Défaut</group>
             <answers>
+                <answer>
+                    <text>Faut voir...</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
                 <answer>
                     <text>Beige</text>
                     <score>0</score>
@@ -28,7 +33,7 @@
             <text>Quelle était la couleur du cheval blanc d'Henry 1 ? C'est la question ultime</text>
             <type>Simple</type>
             <nb-lines>0</nb-lines>
-            <group>Histoire de France</group>
+            <group>Défaut</group>
             <answers>
                 <answer>
                     <text>Faut voir...</text>
@@ -61,29 +66,6 @@
             </answers>
         </question>
         <question>
-            <text>Quelle était la couleur du cheval blanc d'Henry 3 ? C'est la question ultime</text>
-            <type>Simple</type>
-            <nb-lines>0</nb-lines>
-            <group>Histoire de France</group>
-            <answers>
-                <answer>
-                    <text>Faut voir...</text>
-                    <score>0</score>
-                    <correct>false</correct>
-                </answer>
-                <answer>
-                    <text>Beige</text>
-                    <score>0</score>
-                    <correct>false</correct>
-                </answer>
-                <answer>
-                    <text>Le dimanche uniquement</text>
-                    <score>0</score>
-                    <correct>false</correct>
-                </answer>
-            </answers>
-        </question>
-        <question>
             <text>Quelle était la couleur du cheval blanc d'Henry 4 ? C'est la question ultime</text>
             <type>Simple</type>
             <nb-lines>0</nb-lines>
@@ -100,6 +82,38 @@
                     <correct>false</correct>
                 </answer>
             </answers>
+        </question>
+        <question>
+            <text>Quelle était la couleur du cheval blanc d'Henry 3 ? C'est la question ultime</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Catégorie du siècle</group>
+            <answers>
+                <answer>
+                    <text>Faut voir...</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Beige</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Nouvelle question</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Catégorie du siècle</group>
+            <answers/>
+        </question>
+        <question>
+            <text>Nouvelle question</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <answers/>
         </question>
     </questions>
 </amc-root>

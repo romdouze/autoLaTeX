@@ -8,6 +8,8 @@ package ngr.KiKi.autolatex.data;
 import java.awt.Color;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.xml.parsers.*;
@@ -16,6 +18,7 @@ import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;
 import ngr.KiKi.autolatex.utils.Utils;
 import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -29,7 +32,122 @@ public class XMLHandler
 
 	}
 
-	public static void XMLWriter (String path, List<Question> questions, Map<String, Color> groups)
+	public static Test XMLReader (String path)
+	{
+		Test test = new Test ();
+
+		Document dom;
+		// Make an  instance of the DocumentBuilderFactory
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance ();
+		try
+		{
+			// use the factory to take an instance of the document builder
+			DocumentBuilder db = dbf.newDocumentBuilder ();
+			// parse using the builder to get the DOM mapping of the    
+			// XML file
+			dom = db.parse (path);
+
+			Element doc = dom.getDocumentElement ();
+
+			test.setGroups (readGroups (doc.getElementsByTagName ("groups").item (0)));
+
+			test.setQuestions (readQuestions (doc.getElementsByTagName ("questions").item (0)));
+
+		}
+		catch (ParserConfigurationException | SAXException pce)
+		{
+			System.out.println (pce.getMessage ());
+		}
+		catch (IOException ioe)
+		{
+			System.err.println (ioe.getMessage ());
+		}
+
+		return test;
+	}
+
+	private static Map<String, Color> readGroups (Node node)
+	{
+		Map<String, Color> groups = new HashMap<> ();
+
+		for (Node n : findAllSubNode (node, "group"))
+			groups.put (findSubNode (n, "name").getTextContent (), Utils.colors.get (findSubNode (n, "color").getTextContent ()));
+
+		return groups;
+	}
+
+	private static List<Question> readQuestions (Node node)
+	{
+		List<Question> questions = new ArrayList<> ();
+
+		for (Node n : findAllSubNode (node, "question"))
+		{
+			Question q = new Question (findSubNode (n, "text").getTextContent (), Question.TYPE.getType (findSubNode (n, "type").getTextContent ()));
+			q.setGroup (findSubNode (n, "group").getTextContent ());
+			q.setNbLines (Integer.valueOf (findSubNode (n, "nb-lines").getTextContent ()));
+			q.setAnswers (readAnswers (findSubNode (n, "answers")));
+
+			questions.add (q);
+		}
+
+		return questions;
+	}
+
+	private static List<Answer> readAnswers (Node node)
+	{
+		List<Answer> answers = new ArrayList<> ();
+
+		for (Node n : findAllSubNode (node, "answer"))
+		{
+			Answer a = new Answer (findSubNode (n, "text").getTextContent (), Boolean.valueOf (findSubNode (n, "correct").getTextContent ()));
+
+			answers.add (a);
+		}
+
+		return answers;
+	}
+
+	private static Node findSubNode (Node node, String name)
+	{
+		if (node.getNodeType () != Node.ELEMENT_NODE)
+			System.err.println ("Error: Search node not of element type");
+
+		if (!node.hasChildNodes ())
+			return null;
+		NodeList list = node.getChildNodes ();
+		for (int i = 0; i < list.getLength (); i++)
+		{
+			Node subNode = list.item (i);
+			if (subNode.getNodeType () == Node.ELEMENT_NODE)
+				if (subNode.getNodeName ().equals (name))
+					return subNode;
+		}
+
+		return null;
+	}
+
+	private static List<Node> findAllSubNode (Node node, String name)
+	{
+		if (node.getNodeType () != Node.ELEMENT_NODE)
+			System.err.println ("Error: Search node not of element type");
+
+		List<Node> list = new ArrayList<> ();
+		if (!node.hasChildNodes ())
+			return list;
+
+		NodeList children = node.getChildNodes ();
+		for (int i = 0; i < children.getLength (); i++)
+		{
+			Node subNode = children.item (i);
+			if (subNode.getNodeType () == Node.ELEMENT_NODE)
+				if (subNode.getNodeName ().equals (name))
+					list.add (subNode);
+		}
+
+		return list;
+	}
+
+	public static void XMLWriter (String path, Test test)
 	{
 		Document dom;
 		Element e;
@@ -46,8 +164,8 @@ public class XMLHandler
 			// create the root element
 			Element rootEle = dom.createElement ("amc-root");
 
-			rootEle.appendChild (writeGroups (dom, groups));
-			rootEle.appendChild (writeQuestions (dom, questions));
+			rootEle.appendChild (writeGroups (dom, test.getGroups ()));
+			rootEle.appendChild (writeQuestions (dom, test.getQuestions ()));
 
 			dom.appendChild (rootEle);
 
@@ -149,7 +267,7 @@ public class XMLHandler
 			group.appendChild (e);
 
 			e = dom.createElement ("color");
-			e.appendChild (dom.createTextNode (Utils.colors.keySet ().stream ().filter (c -> Utils.colors.get (c) == groups.get (s)).findFirst ().get ()));
+			e.appendChild (dom.createTextNode (Utils.getColor (groups.get (s))));
 			group.appendChild (e);
 
 			root.appendChild (group);
