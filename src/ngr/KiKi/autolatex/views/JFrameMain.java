@@ -10,18 +10,15 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -30,6 +27,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -55,6 +54,8 @@ public class JFrameMain extends javax.swing.JFrame
 	private Test test;
 	private QuestionRenderer selectedRenderer;
 
+	private boolean init;
+
 	/**
 	 * Creates new form AMCAutoLateX
 	 */
@@ -62,17 +63,25 @@ public class JFrameMain extends javax.swing.JFrame
 	{
 		initComponents ();
 
+		init = true;
+
 		setTemplate ();
 		init ();
+
+		init = false;
 	}
 
 	public JFrameMain (Test t)
 	{
 		initComponents ();
 
+		init = true;
+
 		test = t;
 
 		init ();
+
+		init = false;
 	}
 
 	private void setTemplate ()
@@ -93,42 +102,113 @@ public class JFrameMain extends javax.swing.JFrame
 
 		test.setQuestions (questions);
 		test.setGroups (groups);
+
+		test.setTitle ("Intitulé du devoir");
+		test.setColumns (2);
+		test.setNoneText ("Aucune des réponses ci-dessus");
+		test.setCodeText ("Coder votre numéro étudiant");
+		test.setQuestionText ("Question");
+		test.setNameText ("Nom et prénom");
+		test.setEvenPages (true);
+		test.setColor ("Rouge");
 	}
 
 	private void init ()
 	{
 
-		setTitle ("AMC - AutoLaTeX : " + jTextFieldTitle.getText ());
+		setTitle ("AMC - AutoLaTeX : " + test.getTitle ());
+		jTextFieldTitle.setText (test.getTitle ());
+		jTextAreaDescription.setText (test.getDescription ());
+		jCheckBoxShuffle.setSelected (test.isShuffle ());
+		jTextFieldColumns.setText ("" + test.getColumns ());
+		jCheckBoxNone.setSelected (test.isNone ());
+		jTextFieldNoneText.setText (test.getNoneText ());
+		jCheckBoxBlocks.setSelected (test.isBlocks ());
+		jComboBoxFormat.setSelectedItem (test.getFormat ().toString ());
+		jTextFieldCode.setText ("" + test.getCode ());
+		jTextFieldCodeText.setText (test.getCodeText ());
+		jComboBoxLanguage.setSelectedItem (test.getLanguage ().toString ());
+		jTextFieldQuestionText.setText (test.getQuestionText ());
+		jTextFieldNameText.setText (test.getNameText ());
+		jCheckBoxEvenPages.setSelected (test.isEvenPages ());
+		jCheckBoxBlankPage.setSelected (test.isBlankPage ());
+		jComboBoxColor.setSelectedItem (test.getColor ());
 
-		jTextFieldTitle.getDocument ().addDocumentListener (new DocumentListener ()
+		DocumentListener docListener = new DocumentListener ()
 		{
 
 			@Override
 			public void insertUpdate (DocumentEvent de)
 			{
-				updateTitle (jTextFieldTitle.getText ());
+				updateTestValues ();
 			}
 
 			@Override
 			public void removeUpdate (DocumentEvent de)
 			{
-				updateTitle (jTextFieldTitle.getText ());
+				updateTestValues ();
 			}
 
 			@Override
 			public void changedUpdate (DocumentEvent de)
 			{
-				updateTitle (jTextFieldTitle.getText ());
+				updateTestValues ();
 			}
+		};
 
-			private void updateTitle (String t)
-			{
-				setTitle ("AMC - AutoLaTeX : " + t);
-			}
-		});
+		ChangeListener changeListener = (ChangeEvent ce) ->
+		{
+			updateTestValues ();
+		};
+
+		ActionListener actionListener = (ActionEvent ae) ->
+		{
+			updateTestValues ();
+		};
+
+		jTextFieldTitle.getDocument ().addDocumentListener (docListener);
+		jTextAreaDescription.getDocument ().addDocumentListener (docListener);
+		jCheckBoxShuffle.addChangeListener (changeListener);
+		jTextFieldColumns.getDocument ().addDocumentListener (docListener);
+		jCheckBoxNone.addChangeListener (changeListener);
+		jTextFieldNoneText.getDocument ().addDocumentListener (docListener);
+		jCheckBoxBlocks.addChangeListener (changeListener);
+		jComboBoxFormat.addActionListener (actionListener);
+		jTextFieldCode.getDocument ().addDocumentListener (docListener);
+		jTextFieldCodeText.getDocument ().addDocumentListener (docListener);
+		jComboBoxLanguage.addActionListener (actionListener);
+		jTextFieldQuestionText.getDocument ().addDocumentListener (docListener);
+		jTextFieldNameText.getDocument ().addDocumentListener (docListener);
+		jCheckBoxEvenPages.addChangeListener (changeListener);
+		jCheckBoxBlankPage.addChangeListener (changeListener);
+		jComboBoxColor.addActionListener (actionListener);
 
 		initQuestions ();
 //		formulas ();
+	}
+
+	private void updateTestValues ()
+	{
+		if (init)
+			return;
+
+		setTitle ("AMC - AutoLaTeX : " + jTextFieldTitle.getText ());
+		test.setTitle (jTextFieldTitle.getText ());
+		test.setDescription (jTextAreaDescription.getText ());
+		test.setShuffle (jCheckBoxShuffle.isSelected ());
+		test.setColumns (Integer.valueOf (jTextFieldColumns.getText ()));
+		test.setNone (jCheckBoxNone.isSelected ());
+		test.setNoneText (jTextFieldNoneText.getText ());
+		test.setBlocks (jCheckBoxBlocks.isSelected ());
+		test.setFormat (Test.Format.valueOf ((String) jComboBoxFormat.getSelectedItem ()));
+		test.setCode (Integer.valueOf (jTextFieldCode.getText ()));
+		test.setCodeText (jTextFieldCodeText.getText ());
+		test.setLanguage (Test.Language.valueOf ((String) jComboBoxLanguage.getSelectedItem ()));
+		test.setQuestionText (jTextFieldQuestionText.getText ());
+		test.setNameText (jTextFieldNameText.getText ());
+		test.setEvenPages (jCheckBoxEvenPages.isSelected ());
+		test.setBlankPage (jCheckBoxBlankPage.isSelected ());
+		test.setColor ((String) jComboBoxColor.getSelectedItem ());
 	}
 
 	private void initQuestions ()
@@ -308,15 +388,15 @@ public class JFrameMain extends javax.swing.JFrame
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jComboBox2 = new javax.swing.JComboBox();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jComboBox3 = new javax.swing.JComboBox();
+        jComboBoxFormat = new javax.swing.JComboBox();
+        jTextFieldCode = new javax.swing.JTextField();
+        jTextFieldCodeText = new javax.swing.JTextField();
+        jComboBoxLanguage = new javax.swing.JComboBox();
+        jTextFieldQuestionText = new javax.swing.JTextField();
+        jTextFieldNameText = new javax.swing.JTextField();
+        jCheckBoxEvenPages = new javax.swing.JCheckBox();
+        jCheckBoxBlankPage = new javax.swing.JCheckBox();
+        jComboBoxColor = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -329,12 +409,12 @@ public class JFrameMain extends javax.swing.JFrame
         jLabel18 = new javax.swing.JLabel();
         jTextFieldTitle = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jTextField6 = new javax.swing.JTextField();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jTextField7 = new javax.swing.JTextField();
-        jCheckBox5 = new javax.swing.JCheckBox();
+        jTextAreaDescription = new javax.swing.JTextArea();
+        jCheckBoxShuffle = new javax.swing.JCheckBox();
+        jTextFieldColumns = new javax.swing.JTextField();
+        jCheckBoxNone = new javax.swing.JCheckBox();
+        jTextFieldNoneText = new javax.swing.JTextField();
+        jCheckBoxBlocks = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -376,30 +456,29 @@ public class JFrameMain extends javax.swing.JFrame
 
         jLabel16.setText("Couleur cases");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A3", "A4", "A5", "A6", "B3", "B4", "B5", "B6", "letter", "legal", "ANSIA", "ANSIB", "ANSIC", "ANSID", "ANSIE" }));
-        jComboBox1.setSelectedIndex(1);
+        jComboBoxFormat.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "A3", "A4", "A5", "A6", "B3", "B4", "B5", "B6", "letter", "legal", "ANSIA", "ANSIB", "ANSIC", "ANSID", "ANSIE" }));
 
-        jTextField1.setText("8");
+        jTextFieldCode.setText("8");
 
-        jTextField2.setText("jTextField2");
+        jTextFieldCodeText.setText("Coder votre numéro étudiant");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "FR", "ES", "DE", "IT", "NL", "NO", "JA" }));
+        jComboBoxLanguage.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "FR", "ES", "DE", "IT", "NL", "NO", "JA" }));
 
-        jTextField3.setText("Question");
+        jTextFieldQuestionText.setText("Question");
 
-        jTextField4.setText("Nom et prénom");
+        jTextFieldNameText.setText("Nom et prénom");
 
-        jCheckBox1.setSelected(true);
+        jCheckBoxEvenPages.setSelected(true);
 
-        jCheckBox2.addActionListener(new java.awt.event.ActionListener()
+        jCheckBoxBlankPage.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jCheckBox2ActionPerformed(evt);
+                jCheckBoxBlankPageActionPerformed(evt);
             }
         });
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Rouge", "Magenta", "Rose", "Gris clair", "Cyan" }));
+        jComboBoxColor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Rouge", "Magenta", "Rose", "Gris clair", "Cyan" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -419,16 +498,16 @@ public class JFrameMain extends javax.swing.JFrame
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox1)
-                    .addComponent(jCheckBox2)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(73, Short.MAX_VALUE))
+                    .addComponent(jComboBoxFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldCodeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxLanguage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldQuestionText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBoxEvenPages)
+                    .addComponent(jCheckBoxBlankPage)
+                    .addComponent(jComboBoxColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -436,39 +515,39 @@ public class JFrameMain extends javax.swing.JFrame
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldCodeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxLanguage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldQuestionText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jCheckBox1))
+                    .addComponent(jCheckBoxEvenPages))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBox2))
+                    .addComponent(jCheckBoxBlankPage))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel16)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -494,66 +573,48 @@ public class JFrameMain extends javax.swing.JFrame
 
         jTextFieldTitle.setText("Intitulé du devoir");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(3);
-        jScrollPane1.setViewportView(jTextArea1);
+        jTextAreaDescription.setColumns(20);
+        jTextAreaDescription.setRows(3);
+        jScrollPane1.setViewportView(jTextAreaDescription);
 
-        jTextField6.setText("2");
+        jTextFieldColumns.setText("2");
 
-        jCheckBox4.addActionListener(new java.awt.event.ActionListener()
+        jCheckBoxNone.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jCheckBox4ActionPerformed(evt);
+                jCheckBoxNoneActionPerformed(evt);
             }
         });
 
-        jTextField7.setText("Aucune des réponses ci-dessus");
+        jTextFieldNoneText.setText("Aucune des réponses ci-dessus");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(134, 134, 134)
-                                .addComponent(jLabel3))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(95, 95, 95)
-                                .addComponent(jLabel4)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldTitle)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGap(27, 27, 27)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addComponent(jLabel7)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel8)))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBox3)
-                            .addComponent(jCheckBox4)
-                            .addComponent(jCheckBox5))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextFieldTitle)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 386, Short.MAX_VALUE)
+                    .addComponent(jCheckBoxShuffle)
+                    .addComponent(jTextFieldColumns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBoxNone)
+                    .addComponent(jTextFieldNoneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBoxBlocks))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -564,34 +625,33 @@ public class JFrameMain extends javax.swing.JFrame
                     .addComponent(jTextFieldTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGap(9, 9, 9)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jCheckBox3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jCheckBoxShuffle)
                     .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldColumns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
-                    .addComponent(jCheckBox4))
+                    .addComponent(jCheckBoxNone))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldNoneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jCheckBox5))
+                    .addComponent(jCheckBoxBlocks))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel18)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(193, 193, 193))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Avancé"));
@@ -639,12 +699,12 @@ public class JFrameMain extends javax.swing.JFrame
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanelDetailsLayout.setVerticalGroup(
             jPanelDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 477, Short.MAX_VALUE)
             .addGroup(jPanelDetailsLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -687,7 +747,7 @@ public class JFrameMain extends javax.swing.JFrame
         jPanelQuestion.setLayout(jPanelQuestionLayout);
         jPanelQuestionLayout.setHorizontalGroup(
             jPanelQuestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 434, Short.MAX_VALUE)
+            .addGap(0, 438, Short.MAX_VALUE)
         );
         jPanelQuestionLayout.setVerticalGroup(
             jPanelQuestionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -779,15 +839,15 @@ public class JFrameMain extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jCheckBox2ActionPerformed
-    {//GEN-HEADEREND:event_jCheckBox2ActionPerformed
+    private void jCheckBoxBlankPageActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jCheckBoxBlankPageActionPerformed
+    {//GEN-HEADEREND:event_jCheckBoxBlankPageActionPerformed
 		// TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox2ActionPerformed
+    }//GEN-LAST:event_jCheckBoxBlankPageActionPerformed
 
-    private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jCheckBox4ActionPerformed
-    {//GEN-HEADEREND:event_jCheckBox4ActionPerformed
+    private void jCheckBoxNoneActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jCheckBoxNoneActionPerformed
+    {//GEN-HEADEREND:event_jCheckBoxNoneActionPerformed
 		// TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox4ActionPerformed
+    }//GEN-LAST:event_jCheckBoxNoneActionPerformed
 
     private void jButtonNewQuestionActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonNewQuestionActionPerformed
     {//GEN-HEADEREND:event_jButtonNewQuestionActionPerformed
@@ -843,14 +903,14 @@ public class JFrameMain extends javax.swing.JFrame
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonNewQuestion;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JComboBox jComboBox3;
+    private javax.swing.JCheckBox jCheckBoxBlankPage;
+    private javax.swing.JCheckBox jCheckBoxBlocks;
+    private javax.swing.JCheckBox jCheckBoxEvenPages;
+    private javax.swing.JCheckBox jCheckBoxNone;
+    private javax.swing.JCheckBox jCheckBoxShuffle;
+    private javax.swing.JComboBox jComboBoxColor;
+    private javax.swing.JComboBox jComboBoxFormat;
+    private javax.swing.JComboBox jComboBoxLanguage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -890,13 +950,13 @@ public class JFrameMain extends javax.swing.JFrame
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPaneQuestionsList;
     private javax.swing.JTabbedPane jTabbedPaneMain;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextArea jTextAreaDescription;
+    private javax.swing.JTextField jTextFieldCode;
+    private javax.swing.JTextField jTextFieldCodeText;
+    private javax.swing.JTextField jTextFieldColumns;
+    private javax.swing.JTextField jTextFieldNameText;
+    private javax.swing.JTextField jTextFieldNoneText;
+    private javax.swing.JTextField jTextFieldQuestionText;
     private javax.swing.JTextField jTextFieldTitle;
     // End of variables declaration//GEN-END:variables
 }

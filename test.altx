@@ -1,22 +1,71 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <amc-root>
+    <settings>
+        <title>Baccalauréat 2015</title>
+        <description>Ceci est la description du sujet du baccalauréat 2015
+
+
+Challenge accepted</description>
+        <shuffle>false</shuffle>
+        <columns>2</columns>
+        <none>false</none>
+        <none-text>Aucune des réponses ci-dessus. JAMAIS !</none-text>
+        <blocks>false</blocks>
+        <format>B4</format>
+        <code>0</code>
+        <code-text>Coder votre numéro étudiant</code-text>
+        <language>DE</language>
+        <question-text>Question</question-text>
+        <name-text>Nom et prénom</name-text>
+        <even-pages>false</even-pages>
+        <blank-page>true</blank-page>
+        <color>Rose</color>
+    </settings>
     <groups>
         <group>
             <name>Défaut</name>
             <color>Noir</color>
         </group>
-        <group>
-            <name>Existentialisme</name>
-            <color>Magenta</color>
-        </group>
-        <group>
-            <name>Catégorie du siècle</name>
-            <color>Gris clair</color>
-        </group>
     </groups>
     <questions>
         <question>
-            <text>Quelle était la couleur du cheval blanc d'Henry 4 ? C'est la question ultime</text>
+            <text>Quelle était la couleur du cheval blanc d'Henry 0 ? C'est la question ultime</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <answers>
+                <answer>
+                    <text>Faut voir...</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Beige</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Quelle était la couleur du cheval blanc d'Henry 1 ? C'est la question ultime</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <answers>
+                <answer>
+                    <text>Faut voir...</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Beige</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Quelle était la couleur du cheval blanc d'Henry 2 ? C'est la question ultime</text>
             <type>Simple</type>
             <nb-lines>0</nb-lines>
             <group>Défaut</group>
@@ -37,7 +86,7 @@
             <text>Quelle était la couleur du cheval blanc d'Henry 3 ? C'est la question ultime</text>
             <type>Simple</type>
             <nb-lines>0</nb-lines>
-            <group>Catégorie du siècle</group>
+            <group>Défaut</group>
             <answers>
                 <answer>
                     <text>Faut voir...</text>
@@ -52,23 +101,18 @@
             </answers>
         </question>
         <question>
-            <text>Est-ce une question ?</text>
-            <type>Multiple</type>
+            <text>Quelle était la couleur du cheval blanc d'Henry 4 ? C'est la question ultime</text>
+            <type>Simple</type>
             <nb-lines>0</nb-lines>
-            <group>Existentialisme</group>
+            <group>Défaut</group>
             <answers>
                 <answer>
-                    <text>Souvent</text>
+                    <text>Faut voir...</text>
                     <score>0</score>
-                    <correct>true</correct>
+                    <correct>false</correct>
                 </answer>
                 <answer>
-                    <text>Sauf le dimanche</text>
-                    <score>0</score>
-                    <correct>true</correct>
-                </answer>
-                <answer>
-                    <text>Demande à ta mère</text>
+                    <text>Beige</text>
                     <score>0</score>
                     <correct>false</correct>
                 </answer>

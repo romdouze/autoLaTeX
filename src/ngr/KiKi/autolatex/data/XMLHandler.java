@@ -52,6 +52,8 @@ public class XMLHandler
 
 			Element doc = dom.getDocumentElement ();
 
+			readSettings (doc.getElementsByTagName ("settings").item (0), test);
+
 			test.setGroups (readGroups (doc.getElementsByTagName ("groups").item (0)));
 
 			test.setQuestions (readQuestions (doc.getElementsByTagName ("questions").item (0)));
@@ -67,6 +69,26 @@ public class XMLHandler
 		}
 
 		return test;
+	}
+
+	private static void readSettings (Node node, Test test)
+	{
+		test.setTitle (findSubNode (node, "title").getTextContent ());
+		test.setDescription (findSubNode (node, "description").getTextContent ());
+		test.setShuffle (Boolean.valueOf (findSubNode (node, "shuffle").getTextContent ()));
+		test.setColumns (Integer.valueOf (findSubNode (node, "columns").getTextContent ()));
+		test.setNone (Boolean.valueOf (findSubNode (node, "none").getTextContent ()));
+		test.setNoneText (findSubNode (node, "none-text").getTextContent ());
+		test.setBlocks (Boolean.valueOf (findSubNode (node, "blocks").getTextContent ()));
+		test.setFormat (Test.Format.valueOf (findSubNode (node, "format").getTextContent ()));
+		test.setCode (Integer.valueOf (findSubNode (node, "code").getTextContent ()));
+		test.setCodeText (findSubNode (node, "code-text").getTextContent ());
+		test.setLanguage (Test.Language.valueOf (findSubNode (node, "language").getTextContent ()));
+		test.setQuestionText (findSubNode (node, "question-text").getTextContent ());
+		test.setNameText (findSubNode (node, "name-text").getTextContent ());
+		test.setEvenPages (Boolean.valueOf (findSubNode (node, "even-pages").getTextContent ()));
+		test.setBlankPage (Boolean.valueOf (findSubNode (node, "blank-page").getTextContent ()));
+		test.setColor (findSubNode (node, "color").getTextContent ());
 	}
 
 	private static Map<String, Color> readGroups (Node node)
@@ -170,6 +192,7 @@ public class XMLHandler
 			// create the root element
 			Element rootEle = dom.createElement ("amc-root");
 
+			rootEle.appendChild (writeSettings (dom, test));
 			rootEle.appendChild (writeGroups (dom, test.getGroups ()));
 			rootEle.appendChild (writeQuestions (dom, test.getQuestions ()));
 
@@ -197,6 +220,77 @@ public class XMLHandler
 		{
 			System.out.println ("UsersXML: Error trying to instantiate DocumentBuilder " + pce);
 		}
+	}
+
+	private static Element writeSettings (Document dom, Test test)
+	{
+		Element root = dom.createElement ("settings");
+
+		Element e = dom.createElement ("title");
+		e.appendChild (dom.createTextNode (test.getTitle ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("description");
+		e.appendChild (dom.createTextNode (test.getDescription ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("shuffle");
+		e.appendChild (dom.createTextNode ("" + test.isShuffle ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("columns");
+		e.appendChild (dom.createTextNode ("" + test.getColumns ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("none");
+		e.appendChild (dom.createTextNode ("" + test.isNone ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("none-text");
+		e.appendChild (dom.createTextNode (test.getNoneText ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("blocks");
+		e.appendChild (dom.createTextNode ("" + test.isBlocks ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("format");
+		e.appendChild (dom.createTextNode (test.getFormat ().toString ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("code");
+		e.appendChild (dom.createTextNode ("" + test.getCode ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("code-text");
+		e.appendChild (dom.createTextNode (test.getCodeText ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("language");
+		e.appendChild (dom.createTextNode (test.getLanguage ().toString ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("question-text");
+		e.appendChild (dom.createTextNode (test.getQuestionText ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("name-text");
+		e.appendChild (dom.createTextNode (test.getNameText ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("even-pages");
+		e.appendChild (dom.createTextNode ("" + test.isEvenPages ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("blank-page");
+		e.appendChild (dom.createTextNode ("" + test.isBlankPage ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("color");
+		e.appendChild (dom.createTextNode (test.getColor ()));
+		root.appendChild (e);
+
+		return root;
 	}
 
 	private static Element writeQuestions (Document dom, List<Question> questions)
