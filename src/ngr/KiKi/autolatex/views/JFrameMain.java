@@ -12,18 +12,27 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
@@ -31,6 +40,7 @@ import ngr.KiKi.autolatex.AMCAutoLateX;
 import ngr.KiKi.autolatex.data.Question;
 import ngr.KiKi.autolatex.data.Test;
 import ngr.KiKi.autolatex.data.XMLHandler;
+import ngr.KiKi.autolatex.utils.Utils;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
 import org.scilab.forge.jlatexmath.TeXIcon;
@@ -87,6 +97,7 @@ public class JFrameMain extends javax.swing.JFrame
 
 	private void init ()
 	{
+
 		setTitle ("AMC - AutoLaTeX : " + jTextFieldTitle.getText ());
 
 		jTextFieldTitle.getDocument ().addDocumentListener (new DocumentListener ()
@@ -257,7 +268,18 @@ public class JFrameMain extends javax.swing.JFrame
 		{
 			"Oui", "Non"
 		}, null) == JOptionPane.YES_OPTION)
+		{
+			try
+			{
+				FileOutputStream fos = new FileOutputStream (new File (Utils.PROPERTIES_FILENAME));
+				AMCAutoLateX.properties.store (fos, "");
+			}
+			catch (IOException ex)
+			{
+				Logger.getLogger (JFrameMain.class.getName ()).log (Level.SEVERE, null, ex);
+			}
 			dispose ();
+		}
 	}
 
 	public Test getTest ()
@@ -787,12 +809,33 @@ public class JFrameMain extends javax.swing.JFrame
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItemSaveActionPerformed
     {//GEN-HEADEREND:event_jMenuItemSaveActionPerformed
-		XMLHandler.XMLWriter ("output.xml", test);
+		JFileChooser chooser = new JFileChooser ();
+		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier AutoLaTeX", Utils.EXTENSION, Utils.EXTENSION.toUpperCase ()));
+		chooser.setCurrentDirectory (new File (AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH) == null ? "" : AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH)));
+		chooser.setAcceptAllFileFilterUsed (false);
+
+		if (chooser.showSaveDialog (this) != JFileChooser.APPROVE_OPTION)
+			return;
+
+		File file = chooser.getSelectedFile ();
+		AMCAutoLateX.properties.setProperty (Utils.PROPERTIES_RECENT_PATH, file.getParent ());
+		XMLHandler.XMLWriter (file.getAbsolutePath (), test);
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
 
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItemOpenActionPerformed
     {//GEN-HEADEREND:event_jMenuItemOpenActionPerformed
-		test = XMLHandler.XMLReader ("output.xml");
+		JFileChooser chooser = new JFileChooser ();
+		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier AutoLaTeX", Utils.EXTENSION, Utils.EXTENSION.toUpperCase ()));
+		chooser.setCurrentDirectory (new File (AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH) == null ? "" : AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH)));
+		chooser.setAcceptAllFileFilterUsed (false);
+
+		if (chooser.showOpenDialog (this) != JFileChooser.OPEN_DIALOG)
+			return;
+
+		File file = chooser.getSelectedFile ();
+		AMCAutoLateX.properties.setProperty (Utils.PROPERTIES_RECENT_PATH, file.getParent ());
+
+		test = XMLHandler.XMLReader (file.getAbsolutePath ());
 
 		AMCAutoLateX.reload (this);
     }//GEN-LAST:event_jMenuItemOpenActionPerformed

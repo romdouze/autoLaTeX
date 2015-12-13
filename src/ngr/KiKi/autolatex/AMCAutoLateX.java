@@ -8,8 +8,17 @@ package ngr.KiKi.autolatex;
 import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.WindowConstants;
 import ngr.KiKi.autolatex.data.Test;
+import ngr.KiKi.autolatex.utils.Utils;
 import ngr.KiKi.autolatex.views.JFrameMain;
 
 /**
@@ -18,6 +27,8 @@ import ngr.KiKi.autolatex.views.JFrameMain;
  */
 public class AMCAutoLateX
 {
+
+	public static Properties properties;
 
 	/**
 	 * @param args the command line arguments
@@ -57,6 +68,20 @@ public class AMCAutoLateX
 		//</editor-fold>
 		//</editor-fold>
 
+		AMCAutoLateX.properties = new Properties ();
+		try (InputStream inputStream = new FileInputStream (new File (Utils.PROPERTIES_FILENAME)))
+		{
+			AMCAutoLateX.properties.load (inputStream);
+		}
+		catch (FileNotFoundException ex)
+		{
+			Logger.getLogger (JFrameMain.class.getName ()).log (Level.SEVERE, null, ex);
+		}
+		catch (IOException ex)
+		{
+			Logger.getLogger (JFrameMain.class.getName ()).log (Level.SEVERE, null, ex);
+		}
+
 		/* Create and display the form */
 		JFrameMain frame = new JFrameMain ();
 		start (frame);
@@ -87,11 +112,11 @@ public class AMCAutoLateX
 		frame.setLocation (location);
 		start (frame);
 	}
-	
-	public static void reload(JFrameMain frame)
+
+	public static void reload (JFrameMain frame)
 	{
 		Point location = frame.getLocationOnScreen ();
-		Test test = frame.getTest();
+		Test test = frame.getTest ();
 		frame.dispose ();
 		frame = new JFrameMain (test);
 		frame.setLocation (location);

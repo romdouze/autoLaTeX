@@ -6,6 +6,8 @@
 package ngr.KiKi.autolatex.data;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +20,12 @@ public class Test
 
 	private List<Question> questions;
 	private Map<String, Color> groups;
+
+	public Test ()
+	{
+		questions = new ArrayList<> ();
+		groups = new HashMap<> ();
+	}
 
 	public List<Question> getQuestions ()
 	{

@@ -36,6 +36,9 @@ public class XMLHandler
 	{
 		Test test = new Test ();
 
+		if (!path.toLowerCase ().endsWith ("." + Utils.EXTENSION))
+			return test;
+
 		Document dom;
 		// Make an  instance of the DocumentBuilderFactory
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance ();
@@ -149,6 +152,9 @@ public class XMLHandler
 
 	public static void XMLWriter (String path, Test test)
 	{
+		if (!path.toLowerCase ().endsWith ("." + Utils.EXTENSION))
+			path += "." + Utils.EXTENSION;
+
 		Document dom;
 		Element e;
 
