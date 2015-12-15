@@ -18,6 +18,7 @@ public class Question
 {
 
 	private String text;
+	private String shortName;
 	private TYPE type;
 	private int nbLines;
 	private String group;
@@ -28,6 +29,7 @@ public class Question
 		text = txt;
 		type = t;
 		group = "Défaut";
+		shortName = "";
 		answers = new ArrayList<> ();
 	}
 
@@ -86,6 +88,16 @@ public class Question
 	public void setGroup (String group)
 	{
 		this.group = group;
+	}
+
+	public String getShortName ()
+	{
+		return shortName;
+	}
+
+	public void setShortName (String shortName)
+	{
+		this.shortName = shortName;
 	}
 
 	@Override

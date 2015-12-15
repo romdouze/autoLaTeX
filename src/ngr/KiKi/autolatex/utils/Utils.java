@@ -40,6 +40,7 @@ public class Utils
 		return Utils.colors.keySet ().stream ().filter (c -> Utils.colors.get (c) == color).findFirst ().get ();
 	}
 
+	public final static String TEX_EXTENSION = "tex";
 	public final static String EXTENSION = "altx";
 	public final static String PROPERTIES_FILENAME = "AMC_AutoLaTeX.properties";
 	public final static String PROPERTIES_RECENT_PATH = "autolatex.recent-path";

@@ -37,6 +37,7 @@ import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
 import ngr.KiKi.autolatex.AMCAutoLateX;
 import ngr.KiKi.autolatex.data.Question;
+import ngr.KiKi.autolatex.data.TEXHandler;
 import ngr.KiKi.autolatex.data.Test;
 import ngr.KiKi.autolatex.data.XMLHandler;
 import ngr.KiKi.autolatex.utils.Utils;
@@ -50,10 +51,10 @@ import org.scilab.forge.jlatexmath.TeXIcon;
  */
 public class JFrameMain extends javax.swing.JFrame
 {
-
+	
 	private Test test;
 	private QuestionRenderer selectedRenderer;
-
+	
 	private boolean init;
 
 	/**
@@ -62,36 +63,36 @@ public class JFrameMain extends javax.swing.JFrame
 	public JFrameMain ()
 	{
 		initComponents ();
-
+		
 		init = true;
-
+		
 		setTemplate ();
 		init ();
-
+		
 		init = false;
 	}
-
+	
 	public JFrameMain (Test t)
 	{
 		initComponents ();
-
+		
 		init = true;
-
+		
 		test = t;
-
+		
 		init ();
-
+		
 		init = false;
 	}
-
+	
 	private void setTemplate ()
 	{
 		test = new Test ();
 		List<Question> questions = new ArrayList<> ();
 		Map<String, Color> groups = new HashMap<> ();
-
+		
 		groups.put ("Défaut", Color.BLACK);
-
+		
 		for (int i = 0; i < 5; i++)
 		{
 			Question q = new Question ("Quelle était la couleur du cheval blanc d'Henry " + i + " ? C'est la question ultime", Question.TYPE.SIMPLE);
@@ -99,10 +100,10 @@ public class JFrameMain extends javax.swing.JFrame
 			q.addAnswer ("Beige", false);
 			questions.add (q);
 		}
-
+		
 		test.setQuestions (questions);
 		test.setGroups (groups);
-
+		
 		test.setTitle ("Intitulé du devoir");
 		test.setColumns (2);
 		test.setNoneText ("Aucune des réponses ci-dessus");
@@ -112,10 +113,10 @@ public class JFrameMain extends javax.swing.JFrame
 		test.setEvenPages (true);
 		test.setColor ("Rouge");
 	}
-
+	
 	private void init ()
 	{
-
+		
 		setTitle ("AMC - AutoLaTeX : " + test.getTitle ());
 		jTextFieldTitle.setText (test.getTitle ());
 		jTextAreaDescription.setText (test.getDescription ());
@@ -133,39 +134,39 @@ public class JFrameMain extends javax.swing.JFrame
 		jCheckBoxEvenPages.setSelected (test.isEvenPages ());
 		jCheckBoxBlankPage.setSelected (test.isBlankPage ());
 		jComboBoxColor.setSelectedItem (test.getColor ());
-
+		
 		DocumentListener docListener = new DocumentListener ()
 		{
-
+			
 			@Override
 			public void insertUpdate (DocumentEvent de)
 			{
 				updateTestValues ();
 			}
-
+			
 			@Override
 			public void removeUpdate (DocumentEvent de)
 			{
 				updateTestValues ();
 			}
-
+			
 			@Override
 			public void changedUpdate (DocumentEvent de)
 			{
 				updateTestValues ();
 			}
 		};
-
+		
 		ChangeListener changeListener = (ChangeEvent ce) ->
 		{
 			updateTestValues ();
 		};
-
+		
 		ActionListener actionListener = (ActionEvent ae) ->
 		{
 			updateTestValues ();
 		};
-
+		
 		jTextFieldTitle.getDocument ().addDocumentListener (docListener);
 		jTextAreaDescription.getDocument ().addDocumentListener (docListener);
 		jCheckBoxShuffle.addChangeListener (changeListener);
@@ -182,16 +183,16 @@ public class JFrameMain extends javax.swing.JFrame
 		jCheckBoxEvenPages.addChangeListener (changeListener);
 		jCheckBoxBlankPage.addChangeListener (changeListener);
 		jComboBoxColor.addActionListener (actionListener);
-
+		
 		initQuestions ();
 //		formulas ();
 	}
-
+	
 	private void updateTestValues ()
 	{
 		if (init)
 			return;
-
+		
 		setTitle ("AMC - AutoLaTeX : " + jTextFieldTitle.getText ());
 		test.setTitle (jTextFieldTitle.getText ());
 		test.setDescription (jTextAreaDescription.getText ());
@@ -210,11 +211,11 @@ public class JFrameMain extends javax.swing.JFrame
 		test.setBlankPage (jCheckBoxBlankPage.isSelected ());
 		test.setColor ((String) jComboBoxColor.getSelectedItem ());
 	}
-
+	
 	private void initQuestions ()
 	{
 		List<Question> questions = test.getQuestions ();
-
+		
 		jPanelQuestionsList.removeAll ();
 		jPanelQuestionsList.setLayout (new MigLayout (new LC ().fillX ().hideMode (3)));
 		for (int i = 0; i < questions.size (); i++)
@@ -230,10 +231,10 @@ public class JFrameMain extends javax.swing.JFrame
 				if (selectedRenderer != null && selectedRenderer.getQuestion () == q)
 					switchQuestionPanel (null);
 			});
-
+			
 			panel.add (qr, BorderLayout.CENTER);
 			panel.add (deleteQuestion, BorderLayout.EAST);
-
+			
 			JPanel upDown = new JPanel (new BorderLayout ());
 			JButton up = new JButton ("\u25B2");
 			up.setEnabled (i != 0);
@@ -253,26 +254,26 @@ public class JFrameMain extends javax.swing.JFrame
 				questions.add (index + 1, q);
 				initQuestions ();
 			});
-
+			
 			upDown.add (up, BorderLayout.NORTH);
 			upDown.add (down, BorderLayout.SOUTH);
 			panel.add (upDown, BorderLayout.WEST);
-
+			
 			jPanelQuestionsList.add (panel, new CC ().wrap ().growX ());
 		}
 		jPanelQuestionsList.add (jButtonNewQuestion);
-
+		
 		jPanelQuestion.setLayout (new BorderLayout ());
-
+		
 		repaint ();
 	}
-
+	
 	public void updateQR ()
 	{
 		selectedRenderer.updateColor ();
 		selectedRenderer.updateText ();
 	}
-
+	
 	public void switchQuestionPanel (QuestionRenderer qr)
 	{
 		if (qr == null)
@@ -284,20 +285,20 @@ public class JFrameMain extends javax.swing.JFrame
 			jPanelQuestion.removeAll ();
 			jPanelQuestion.add (new QuestionPanel (this, question));
 		}
-
+		
 		repaint ();
 	}
-
+	
 	public void addGroup (String g, Color c)
 	{
 		test.getGroups ().put (g, c);
 	}
-
+	
 	public Map<String, Color> getGroups ()
 	{
 		return test.getGroups ();
 	}
-
+	
 	private void formulas ()
 	{
 		String math = "\\frac {V_m} {K_M+S}";
@@ -308,12 +309,12 @@ public class JFrameMain extends javax.swing.JFrame
 				+ "\\int_{-\\frac{T}{2}}^{\\frac{T}{2}} f(t) e^{-2i\\pi\\frac{k}{T}t} dt\n"
 				+ "}_{a_k = \\tilde{f}\\left(\\nu = \\frac{k}{T}\\right)}\n"
 				+ "\\]\n";
-
+		
 		String chemistry = "\\mathrm{ H_{3}O^{+} + OH^{-} \\rightleftharpoons 2H_{2}O";
-
+		
 		TeXFormula chemistryTexFormula = new TeXFormula (chemistry);
 		TeXIcon icon = chemistryTexFormula.new TeXIconBuilder ().setStyle (TeXConstants.STYLE_DISPLAY).setSize (20).build ();
-
+		
 		icon.setInsets (new Insets (5, 5, 5, 5));
 		BufferedImage image = new BufferedImage (icon.getIconWidth (), icon.getIconHeight (), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = image.createGraphics ();
@@ -341,7 +342,7 @@ public class JFrameMain extends javax.swing.JFrame
 //		pack ();
 //		repaint ();
 	}
-
+	
 	public void exit ()
 	{
 		if (JOptionPane.showOptionDialog (this, "Êtes-vous sûr de vouloir quitter ?", "Quitter", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]
@@ -361,7 +362,7 @@ public class JFrameMain extends javax.swing.JFrame
 			dispose ();
 		}
 	}
-
+	
 	public Test getTest ()
 	{
 		return test;
@@ -432,6 +433,7 @@ public class JFrameMain extends javax.swing.JFrame
         jMenuItemSave = new javax.swing.JMenuItem();
         jMenuItemExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AMC - AutoLaTeX");
@@ -699,7 +701,7 @@ public class JFrameMain extends javax.swing.JFrame
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 320, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanelDetailsLayout.setVerticalGroup(
@@ -821,6 +823,17 @@ public class JFrameMain extends javax.swing.JFrame
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Edit");
+
+        jMenuItem1.setText("Générer LaTeX");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -858,7 +871,7 @@ public class JFrameMain extends javax.swing.JFrame
 
     private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItemExitActionPerformed
     {//GEN-HEADEREND:event_jMenuItemExitActionPerformed
-
+		
 		exit ();
     }//GEN-LAST:event_jMenuItemExitActionPerformed
 
@@ -873,10 +886,10 @@ public class JFrameMain extends javax.swing.JFrame
 		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier AutoLaTeX", Utils.EXTENSION, Utils.EXTENSION.toUpperCase ()));
 		chooser.setCurrentDirectory (new File (AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH) == null ? "" : AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH)));
 		chooser.setAcceptAllFileFilterUsed (false);
-
+		
 		if (chooser.showSaveDialog (this) != JFileChooser.APPROVE_OPTION)
 			return;
-
+		
 		File file = chooser.getSelectedFile ();
 		AMCAutoLateX.properties.setProperty (Utils.PROPERTIES_RECENT_PATH, file.getParent ());
 		XMLHandler.XMLWriter (file.getAbsolutePath (), test);
@@ -888,17 +901,22 @@ public class JFrameMain extends javax.swing.JFrame
 		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier AutoLaTeX", Utils.EXTENSION, Utils.EXTENSION.toUpperCase ()));
 		chooser.setCurrentDirectory (new File (AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH) == null ? "" : AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH)));
 		chooser.setAcceptAllFileFilterUsed (false);
-
+		
 		if (chooser.showOpenDialog (this) != JFileChooser.OPEN_DIALOG)
 			return;
-
+		
 		File file = chooser.getSelectedFile ();
 		AMCAutoLateX.properties.setProperty (Utils.PROPERTIES_RECENT_PATH, file.getParent ());
-
+		
 		test = XMLHandler.XMLReader (file.getAbsolutePath ());
-
+		
 		AMCAutoLateX.reload (this);
     }//GEN-LAST:event_jMenuItemOpenActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItem1ActionPerformed
+    {//GEN-HEADEREND:event_jMenuItem1ActionPerformed
+		TEXHandler.TEXWriter ("output.tex", test);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -936,6 +954,7 @@ public class JFrameMain extends javax.swing.JFrame
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItemExit;
     private javax.swing.JMenuItem jMenuItemNew;
     private javax.swing.JMenuItem jMenuItemOpen;
