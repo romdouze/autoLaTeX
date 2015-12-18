@@ -23,6 +23,7 @@ public class Question
 	private int nbLines;
 	private String group;
 	private List<Answer> answers;
+	private String picture;
 
 	public Question (String txt, TYPE t)
 	{
@@ -30,6 +31,7 @@ public class Question
 		type = t;
 		group = "Défaut";
 		shortName = "";
+		picture = "";
 		answers = new ArrayList<> ();
 	}
 
@@ -98,6 +100,16 @@ public class Question
 	public void setShortName (String shortName)
 	{
 		this.shortName = shortName;
+	}
+
+	public String getPicture ()
+	{
+		return picture;
+	}
+
+	public void setPicture (String picture)
+	{
+		this.picture = picture;
 	}
 
 	@Override

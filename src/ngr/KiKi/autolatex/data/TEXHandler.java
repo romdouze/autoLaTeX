@@ -59,6 +59,39 @@ public class TEXHandler
 					print.println ("}\n");
 				});
 			});
+
+			print.println ("%%% fabrication des copies\n");
+			print.println ("\\exemplaire{10}{\n");
+			print.println ("%%% debut de l'en-tête des copies :\n");
+			print.println ("\\noindent{\\bf QCM \\hfill TEST}\n");
+			print.println ("\\vspace*{.5cm}");
+			print.println ("\\begin{minipage}{.4\\linewidth}");
+			print.println ("  \\centering\\large\\bf " + test.getTitle ());
+			print.println ("\\end{minipage}");
+			print.println ("\\champnom{\\fbox{\\begin{minipage}{.5\\linewidth}");
+			print.println (test.getNameText () + "\n");
+			print.println ("\\vspace*{.5cm}\\dotfill");
+			print.println ("\\vspace*{1mm}");
+			print.println ("\\end{minipage}}}\n");
+
+			print.println ("%%% fin de l'en-tête\n");
+
+			test.getGroups ().keySet ().stream ().forEach ((g) ->
+			{
+				print.println ("\\begin{center}");
+				print.println ("  \\hrule\\vspace{2mm}");
+				print.println ("  \\bf\\Large " + g);
+				print.println ("  \\vspace{2mm}\\hrule");
+				print.println ("\\end{center}\n");
+				print.println ("\\melangegroupe{" + g + "}");
+				print.println ("\\restituegroupe{" + g + "}\n");
+			});
+
+			print.println ("\\clearpage\n");
+
+			print.println ("}\n");
+
+			print.println ("\\end{document}");
 		}
 		catch (IOException ex)
 		{
