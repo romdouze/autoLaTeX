@@ -46,8 +46,8 @@ public class TEXHandler
 			{
 				test.getQuestions ().stream ().filter ((q) -> q.getGroup ().equals (g)).forEach ((q) ->
 				{
-					print.printf ("\\element{%s}{\n", g);
-					print.printf ("  \\begin{question}{%s}\n", q.getShortName ());
+					print.printf ("\\element{%s}{\n", Utils.normalize (g));
+					print.printf ("  \\begin{question}{%s}\n", q.getShortName ().isEmpty () ? q.getText ().substring (0, 10) + "__" + (int) (Math.random () * 1000) : q.getShortName ());
 					print.println ("    " + q.getText ());
 					print.println ("    \\begin{reponses}");
 					q.getAnswers ().stream ().forEach ((a) ->
@@ -80,7 +80,7 @@ public class TEXHandler
 			{
 				print.println ("\\begin{center}");
 				print.println ("  \\hrule\\vspace{2mm}");
-				print.println ("  \\bf\\Large " + g);
+				print.println ("  \\bf\\Large " + Utils.normalize (g));
 				print.println ("  \\vspace{2mm}\\hrule");
 				print.println ("\\end{center}\n");
 				print.println ("\\melangegroupe{" + g + "}");

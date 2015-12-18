@@ -6,6 +6,7 @@
 package ngr.KiKi.autolatex.utils;
 
 import java.awt.Color;
+import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +35,11 @@ public class Utils
 			put ("Jaune", Color.YELLOW);
 		}
 	};
+
+	public static String normalize (String s)
+	{
+		return StringOperation.normalize (s);
+	}
 
 	public static String getColor (Color color)
 	{
