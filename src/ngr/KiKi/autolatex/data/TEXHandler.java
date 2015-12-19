@@ -80,11 +80,11 @@ public class TEXHandler
 			{
 				print.println ("\\begin{center}");
 				print.println ("  \\hrule\\vspace{2mm}");
-				print.println ("  \\bf\\Large " + Utils.normalize (g));
+				print.println ("  \\bf\\Large " + g);
 				print.println ("  \\vspace{2mm}\\hrule");
 				print.println ("\\end{center}\n");
-				print.println ("\\melangegroupe{" + g + "}");
-				print.println ("\\restituegroupe{" + g + "}\n");
+				print.println ("\\melangegroupe{" + Utils.normalize (g) + "}");
+				print.println ("\\restituegroupe{" + Utils.normalize (g) + "}\n");
 			});
 
 			print.println ("\\clearpage\n");
