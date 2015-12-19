@@ -231,6 +231,7 @@ public class JFrameMain extends javax.swing.JFrame
 			JPanel panel = new JPanel (new BorderLayout ());
 			Question q = questions.get (i);
 			QuestionRenderer qr = new QuestionRenderer (this, q, i + 1);
+			qr.updateColor ();
 			JButton deleteQuestion = new JButton ("X");
 			deleteQuestion.addActionListener ((ActionEvent ae) ->
 			{
@@ -698,7 +699,7 @@ public class JFrameMain extends javax.swing.JFrame
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel22)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(133, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelDetailsLayout = new javax.swing.GroupLayout(jPanelDetails);
@@ -714,7 +715,7 @@ public class JFrameMain extends javax.swing.JFrame
         );
         jPanelDetailsLayout.setVerticalGroup(
             jPanelDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 477, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanelDetailsLayout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -748,7 +749,7 @@ public class JFrameMain extends javax.swing.JFrame
             .addGroup(jPanelQuestionsListLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButtonNewQuestion)
-                .addContainerGap(462, Short.MAX_VALUE))
+                .addContainerGap(501, Short.MAX_VALUE))
         );
 
         jScrollPaneQuestionsList.setViewportView(jPanelQuestionsList);
@@ -776,7 +777,7 @@ public class JFrameMain extends javax.swing.JFrame
         );
         jPanelQuestionsLayout.setVerticalGroup(
             jPanelQuestionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPaneQuestionsList, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE)
+            .addComponent(jScrollPaneQuestionsList, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
             .addComponent(jPanelQuestion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -854,7 +855,7 @@ public class JFrameMain extends javax.swing.JFrame
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPaneMain)
+            .addComponent(jTabbedPaneMain, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
         );
 
         pack();

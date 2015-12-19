@@ -131,8 +131,9 @@ public class QuestionPanel extends javax.swing.JPanel
 	private void updateDisplay ()
 	{
 		((TitledBorder) jScrollPaneAnswers.getBorder ()).setTitle (question.getAnswers ().size () + " réponses");
-		repaint ();
+
 		parent.updateQR ();
+		parent.repaint ();
 	}
 
 	private void updateValues ()
@@ -265,7 +266,7 @@ public class QuestionPanel extends javax.swing.JPanel
             jPanelAnswersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAnswersLayout.createSequentialGroup()
                 .addComponent(jButtonAddAnswer)
-                .addGap(0, 152, Short.MAX_VALUE))
+                .addGap(0, 185, Short.MAX_VALUE))
         );
 
         jScrollPaneAnswers.setViewportView(jPanelAnswers);
@@ -326,10 +327,9 @@ public class QuestionPanel extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneAnswers, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPaneAnswers, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanelConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanelConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
