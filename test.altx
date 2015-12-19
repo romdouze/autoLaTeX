@@ -20,6 +20,8 @@ Challenge accepted</description>
         <even-pages>false</even-pages>
         <blank-page>true</blank-page>
         <color>Rose</color>
+		<default-score-correct>3</default-score-correct>
+		<default-score-incorrect>-1</default-score-incorrect>
     </settings>
     <groups>
         <group>

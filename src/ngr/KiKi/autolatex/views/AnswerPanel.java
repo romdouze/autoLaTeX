@@ -7,6 +7,7 @@ package ngr.KiKi.autolatex.views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import ngr.KiKi.autolatex.data.Answer;
@@ -44,6 +45,7 @@ public class AnswerPanel extends javax.swing.JPanel
 		jCheckBoxCorrect.setSelected (answer.isCorrect ());
 		jCheckBoxCorrect.addActionListener ((ActionEvent ae) ->
 		{
+			jTextFieldScore.setText ("" + (jCheckBoxCorrect.isSelected () ? parent.getFrame ().getTest ().getDefaultScoreCorrect () : parent.getFrame ().getTest ().getDefaultScoreIncorrect ()));
 			update ();
 		});
 
@@ -186,7 +188,11 @@ public class AnswerPanel extends javax.swing.JPanel
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonDeleteActionPerformed
     {//GEN-HEADEREND:event_jButtonDeleteActionPerformed
-		parent.removeAnswer (this);
+		if (JOptionPane.showOptionDialog (parent.getFrame (), "Êtes-vous sûr de vouloir supprimer cette réponse ?", "Supprimer réponse", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]
+		{
+			"Oui", "Non"
+		}, null) == JOptionPane.YES_OPTION)
+			parent.removeAnswer (this);
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
 

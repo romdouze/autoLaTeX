@@ -37,6 +37,8 @@ public class Test
 	private boolean evenPages;
 	private boolean blankPage;
 	private String color;
+	private int defaultScoreCorrect;
+	private int defaultScoreIncorrect;
 
 	public Test ()
 	{
@@ -230,6 +232,26 @@ public class Test
 	public void setColor (String color)
 	{
 		this.color = color;
+	}
+
+	public int getDefaultScoreCorrect ()
+	{
+		return defaultScoreCorrect;
+	}
+
+	public void setDefaultScoreCorrect (int defaultScoreCorrect)
+	{
+		this.defaultScoreCorrect = defaultScoreCorrect;
+	}
+
+	public int getDefaultScoreIncorrect ()
+	{
+		return defaultScoreIncorrect;
+	}
+
+	public void setDefaultScoreIncorrect (int defaultScoreIncorrect)
+	{
+		this.defaultScoreIncorrect = defaultScoreIncorrect;
 	}
 
 	public static enum Format

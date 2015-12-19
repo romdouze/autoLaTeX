@@ -112,6 +112,8 @@ public class JFrameMain extends javax.swing.JFrame
 		test.setNameText ("Nom et prénom");
 		test.setEvenPages (true);
 		test.setColor ("Rouge");
+		test.setDefaultScoreCorrect (2);
+		test.setDefaultScoreIncorrect (0);
 	}
 
 	private void init ()
@@ -134,6 +136,8 @@ public class JFrameMain extends javax.swing.JFrame
 		jCheckBoxEvenPages.setSelected (test.isEvenPages ());
 		jCheckBoxBlankPage.setSelected (test.isBlankPage ());
 		jComboBoxColor.setSelectedItem (test.getColor ());
+		jTextFieldDefaultScoreCorrect.setText ("" + test.getDefaultScoreCorrect ());
+		jTextFieldDefaultScoreIncorrect.setText ("" + test.getDefaultScoreIncorrect ());
 
 		DocumentListener docListener = new DocumentListener ()
 		{
@@ -183,6 +187,8 @@ public class JFrameMain extends javax.swing.JFrame
 		jCheckBoxEvenPages.addChangeListener (changeListener);
 		jCheckBoxBlankPage.addChangeListener (changeListener);
 		jComboBoxColor.addActionListener (actionListener);
+		jTextFieldDefaultScoreCorrect.getDocument ().addDocumentListener (docListener);
+		jTextFieldDefaultScoreIncorrect.getDocument ().addDocumentListener (docListener);
 
 		initQuestions ();
 //		formulas ();
@@ -213,6 +219,8 @@ public class JFrameMain extends javax.swing.JFrame
 		{
 			test.setColumns (Integer.valueOf (jTextFieldColumns.getText ()));
 			test.setCode (Integer.valueOf (jTextFieldCode.getText ()));
+			test.setDefaultScoreCorrect (Integer.valueOf (jTextFieldDefaultScoreCorrect.getText ()));
+			test.setDefaultScoreIncorrect (Integer.valueOf (jTextFieldDefaultScoreIncorrect.getText ()));
 		}
 		catch (NumberFormatException ex)
 		{
@@ -232,13 +240,19 @@ public class JFrameMain extends javax.swing.JFrame
 			Question q = questions.get (i);
 			QuestionRenderer qr = new QuestionRenderer (this, q, i + 1);
 			qr.updateColor ();
-			JButton deleteQuestion = new JButton ("X");
+			JButton deleteQuestion = new JButton ("-");
 			deleteQuestion.addActionListener ((ActionEvent ae) ->
 			{
-				questions.remove (q);
-				initQuestions ();
-				if (selectedRenderer != null && selectedRenderer.getQuestion () == q)
-					switchQuestionPanel (null);
+				if (JOptionPane.showOptionDialog (this, "Êtes-vous sûr de vouloir supprimer cette question ?", "Supprimer question", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]
+				{
+					"Oui", "Non"
+				}, null) == JOptionPane.YES_OPTION)
+				{
+					questions.remove (q);
+					initQuestions ();
+					if (selectedRenderer != null && selectedRenderer.getQuestion () == q)
+						switchQuestionPanel (null);
+				}
 			});
 
 			panel.add (qr, BorderLayout.CENTER);
@@ -425,6 +439,10 @@ public class JFrameMain extends javax.swing.JFrame
         jCheckBoxNone = new javax.swing.JCheckBox();
         jTextFieldNoneText = new javax.swing.JTextField();
         jCheckBoxBlocks = new javax.swing.JCheckBox();
+        jLabel23 = new javax.swing.JLabel();
+        jTextFieldDefaultScoreCorrect = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        jTextFieldDefaultScoreIncorrect = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -443,6 +461,8 @@ public class JFrameMain extends javax.swing.JFrame
         jMenuItemExit = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("AMC - AutoLaTeX");
@@ -518,7 +538,7 @@ public class JFrameMain extends javax.swing.JFrame
                     .addComponent(jCheckBoxEvenPages)
                     .addComponent(jCheckBoxBlankPage)
                     .addComponent(jComboBoxColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -600,32 +620,44 @@ public class JFrameMain extends javax.swing.JFrame
 
         jTextFieldNoneText.setText("Aucune des réponses ci-dessus");
 
+        jLabel23.setText("Score bonne réponse");
+
+        jTextFieldDefaultScoreCorrect.setText("2");
+
+        jLabel24.setText("Score mauvaise réponse");
+
+        jTextFieldDefaultScoreIncorrect.setText("0");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(23, 23, 23)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextFieldTitle)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
-                    .addComponent(jCheckBoxShuffle)
                     .addComponent(jTextFieldColumns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldDefaultScoreIncorrect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCheckBoxNone)
                     .addComponent(jTextFieldNoneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBoxBlocks))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jCheckBoxBlocks)
+                    .addComponent(jTextFieldTitle)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
+                    .addComponent(jTextFieldDefaultScoreCorrect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jCheckBoxShuffle))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -638,7 +670,7 @@ public class JFrameMain extends javax.swing.JFrame
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jCheckBoxShuffle)
                     .addComponent(jLabel5))
@@ -659,10 +691,18 @@ public class JFrameMain extends javax.swing.JFrame
                     .addComponent(jLabel10)
                     .addComponent(jCheckBoxBlocks))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(jTextFieldDefaultScoreCorrect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24)
+                    .addComponent(jTextFieldDefaultScoreIncorrect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel18)
-                .addGap(193, 193, 193))
+                .addGap(139, 139, 139))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Avancé"));
@@ -777,7 +817,7 @@ public class JFrameMain extends javax.swing.JFrame
         );
         jPanelQuestionsLayout.setVerticalGroup(
             jPanelQuestionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPaneQuestionsList, javax.swing.GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
+            .addComponent(jScrollPaneQuestionsList)
             .addComponent(jPanelQuestion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -831,7 +871,7 @@ public class JFrameMain extends javax.swing.JFrame
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("LaTeX");
 
         jMenuItem1.setText("Générer LaTeX");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener()
@@ -845,6 +885,13 @@ public class JFrameMain extends javax.swing.JFrame
 
         jMenuBar1.add(jMenu2);
 
+        jMenu3.setText("?");
+
+        jMenuItem2.setText("A propos...");
+        jMenu3.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu3);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -855,7 +902,7 @@ public class JFrameMain extends javax.swing.JFrame
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPaneMain, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+            .addComponent(jTabbedPaneMain)
         );
 
         pack();
@@ -924,7 +971,17 @@ public class JFrameMain extends javax.swing.JFrame
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItem1ActionPerformed
     {//GEN-HEADEREND:event_jMenuItem1ActionPerformed
-		TEXHandler.TEXWriter ("output.tex", test);
+		JFileChooser chooser = new JFileChooser ();
+		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier LaTeX", Utils.TEX_EXTENSION, Utils.TEX_EXTENSION.toUpperCase ()));
+		chooser.setCurrentDirectory (new File (AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH) == null ? "" : AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH)));
+		chooser.setAcceptAllFileFilterUsed (false);
+
+		if (chooser.showSaveDialog (this) != JFileChooser.APPROVE_OPTION)
+			return;
+
+		File file = chooser.getSelectedFile ();
+		AMCAutoLateX.properties.setProperty (Utils.PROPERTIES_RECENT_PATH, file.getParent ());
+		TEXHandler.TEXWriter (file.getAbsolutePath (), test);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
 
@@ -953,6 +1010,8 @@ public class JFrameMain extends javax.swing.JFrame
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -962,8 +1021,10 @@ public class JFrameMain extends javax.swing.JFrame
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItemExit;
     private javax.swing.JMenuItem jMenuItemNew;
     private javax.swing.JMenuItem jMenuItemOpen;
@@ -982,6 +1043,8 @@ public class JFrameMain extends javax.swing.JFrame
     private javax.swing.JTextField jTextFieldCode;
     private javax.swing.JTextField jTextFieldCodeText;
     private javax.swing.JTextField jTextFieldColumns;
+    private javax.swing.JTextField jTextFieldDefaultScoreCorrect;
+    private javax.swing.JTextField jTextFieldDefaultScoreIncorrect;
     private javax.swing.JTextField jTextFieldNameText;
     private javax.swing.JTextField jTextFieldNoneText;
     private javax.swing.JTextField jTextFieldQuestionText;

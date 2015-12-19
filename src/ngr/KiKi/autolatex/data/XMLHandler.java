@@ -89,6 +89,8 @@ public class XMLHandler
 		test.setEvenPages (Boolean.valueOf (findSubNode (node, "even-pages").getTextContent ()));
 		test.setBlankPage (Boolean.valueOf (findSubNode (node, "blank-page").getTextContent ()));
 		test.setColor (findSubNode (node, "color").getTextContent ());
+		test.setDefaultScoreCorrect (Integer.valueOf (findSubNode (node, "default-score-correct").getTextContent ()));
+		test.setDefaultScoreIncorrect (Integer.valueOf (findSubNode (node, "default-score-incorrect").getTextContent ()));
 	}
 
 	private static Map<String, Color> readGroups (Node node)
@@ -289,6 +291,14 @@ public class XMLHandler
 
 		e = dom.createElement ("color");
 		e.appendChild (dom.createTextNode (test.getColor ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("default-score-correct");
+		e.appendChild (dom.createTextNode ("" + test.getDefaultScoreCorrect ()));
+		root.appendChild (e);
+
+		e = dom.createElement ("default-score-incorrect");
+		e.appendChild (dom.createTextNode ("" + test.getDefaultScoreIncorrect ()));
 		root.appendChild (e);
 
 		return root;
