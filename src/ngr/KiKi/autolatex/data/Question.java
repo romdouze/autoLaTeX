@@ -97,6 +97,13 @@ public class Question
 		return shortName;
 	}
 
+	public String getShortNameOrGenerate ()
+	{
+		shortName = shortName.isEmpty () ? text.substring (0, 10) + "__" + (int) (Math.random () * 1000) : shortName;
+
+		return shortName;
+	}
+
 	public void setShortName (String shortName)
 	{
 		this.shortName = shortName;
@@ -121,7 +128,7 @@ public class Question
 	public static enum TYPE
 	{
 
-		SIMPLE ("Simple"), MULTIPLE ("Multiple"), OPEN ("Ouverte");
+		SIMPLE ("Simple"), MULTIPLE ("Multiple"), OPEN ("Ouverte"), INFO ("Informative");
 
 		private final String stringValue;
 

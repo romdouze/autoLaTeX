@@ -1,4 +1,4 @@
-\documentclass[b4paper]{article}
+\documentclass[a4paper]{article}
 
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
@@ -9,7 +9,7 @@
 %%% préparation des groupes
 
 \element{Defaut}{
-  \begin{question}{Quelle éta__675}
+  \begin{question}{Quelle éta__323}
     Quelle était la couleur du cheval blanc d'Henry 1 ? C'est la question ultime
     \begin{reponses}
       \mauvaise{Faut voir...}
@@ -20,16 +20,25 @@
 }
 
 \element{Defaut}{
-  \begin{question}{Nouvelle q__563}
+  \begin{question}{Nouvelle q__210}
     Nouvelle question
     \begin{reponses}
       \mauvaise{Essaie demain}
+      \bonne{Essaie hier}
     \end{reponses}
   \end{question}
 }
 
+\element{Defaut}{
+  \begin{question}{Question o__331}
+    Question ouverte de l'année
+    \AMCOpen{lines=2}{\correctchoice[Parfait]{Parfait}\scoring{2}\wrongchoice[Moyen]{Moyen}\scoring{1}\wrongchoice[Nul]{Nul}\scoring{0}}
+\end{question}
+
+}
+
 \element{Categorie}{
-  \begin{question}{Quelle éta__624}
+  \begin{question}{Quelle éta__709}
     Quelle était la couleur du cheval blanc d'Henry 0 ? C'est la question ultime
     \begin{reponses}
       \mauvaise{Faut voir...}
@@ -39,14 +48,14 @@
 }
 
 \element{Categorie}{
-  \begin{question}{Nouvelle q__942}
+  \begin{questionmult}{Nouvelle q__20}
     Nouvelle question du siècle
     \begin{reponses}
       \mauvaise{Réponse A}
       \bonne{Nouvelle PAF!}
-      \mauvaise{JAMAIS!}
+      \bonne{JAMAIS!}
     \end{reponses}
-  \end{question}
+  \end{questionmult}
 }
 
 %%% fabrication des copies

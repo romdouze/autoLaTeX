@@ -20,6 +20,7 @@ public class AnswerPanel extends javax.swing.JPanel
 
 	private final Answer answer;
 	private final QuestionPanel parent;
+	private boolean init;
 
 	/**
 	 * Creates new form AnswerPanel
@@ -28,10 +29,14 @@ public class AnswerPanel extends javax.swing.JPanel
 	{
 		initComponents ();
 
+		init = true;
+
 		parent = p;
 		answer = a;
 
 		init ();
+
+		init = false;
 	}
 
 	private void init ()
@@ -42,8 +47,7 @@ public class AnswerPanel extends javax.swing.JPanel
 			update ();
 		});
 
-		jTextAreaText.setText (answer.toString ());
-		jTextAreaText.getDocument ().addDocumentListener (new DocumentListener ()
+		DocumentListener dc = new DocumentListener ()
 		{
 
 			@Override
@@ -63,7 +67,13 @@ public class AnswerPanel extends javax.swing.JPanel
 			{
 				update ();
 			}
-		});
+		};
+
+		jTextAreaText.setText (answer.toString ());
+		jTextAreaText.getDocument ().addDocumentListener (dc);
+
+		jTextFieldScore.setText ("" + answer.getScore ());
+		jTextFieldScore.getDocument ().addDocumentListener (dc);
 	}
 
 	public Answer getAnswer ()
@@ -73,8 +83,19 @@ public class AnswerPanel extends javax.swing.JPanel
 
 	private void update ()
 	{
-		answer.setCorrect (jCheckBoxCorrect.isSelected ());
-		answer.setText (jTextAreaText.getText ());
+		if (!init)
+		{
+			answer.setCorrect (jCheckBoxCorrect.isSelected ());
+			answer.setText (jTextAreaText.getText ());
+			try
+			{
+				answer.setScore (Integer.valueOf (jTextFieldScore.getText ()));
+			}
+			catch (NumberFormatException ex)
+			{
+
+			}
+		}
 	}
 
 	/**
@@ -89,7 +110,9 @@ public class AnswerPanel extends javax.swing.JPanel
         jCheckBoxCorrect = new javax.swing.JCheckBox();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaText = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        jButtonDelete = new javax.swing.JButton();
+        jTextFieldScore = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(350, 40));
 
@@ -107,15 +130,20 @@ public class AnswerPanel extends javax.swing.JPanel
         jTextAreaText.setRows(2);
         jScrollPane1.setViewportView(jTextAreaText);
 
-        jButton1.setText("-");
-        jButton1.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jButton1.addActionListener(new java.awt.event.ActionListener()
+        jButtonDelete.setText("-");
+        jButtonDelete.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jButtonDelete.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
             {
-                jButton1ActionPerformed(evt);
+                jButtonDeleteActionPerformed(evt);
             }
         });
+
+        jTextFieldScore.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        jLabel1.setText("Score");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -125,9 +153,13 @@ public class AnswerPanel extends javax.swing.JPanel
                 .addContainerGap()
                 .addComponent(jCheckBoxCorrect)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextFieldScore))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonDelete)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -136,9 +168,14 @@ public class AnswerPanel extends javax.swing.JPanel
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
+                    .addComponent(jButtonDelete)
                     .addComponent(jCheckBoxCorrect))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldScore, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -147,16 +184,18 @@ public class AnswerPanel extends javax.swing.JPanel
 		// TODO add your handling code here:
     }//GEN-LAST:event_jCheckBoxCorrectActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButton1ActionPerformed
-    {//GEN-HEADEREND:event_jButton1ActionPerformed
+    private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonDeleteActionPerformed
+    {//GEN-HEADEREND:event_jButtonDeleteActionPerformed
 		parent.removeAnswer (this);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonDelete;
     private javax.swing.JCheckBox jCheckBoxCorrect;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextAreaText;
+    private javax.swing.JTextField jTextFieldScore;
     // End of variables declaration//GEN-END:variables
 }

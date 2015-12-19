@@ -124,10 +124,10 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jPanel2" max="32767" attributes="0"/>
+                      <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jPanel1" pref="320" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jPanel1" max="32767" attributes="0"/>
                           <Component id="jPanel3" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -182,7 +182,7 @@
                               <Component id="jCheckBoxBlankPage" min="-2" max="-2" attributes="0"/>
                               <Component id="jComboBoxColor" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="108" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -396,7 +396,7 @@
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jTextFieldTitle" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jScrollPane1" alignment="0" pref="386" max="32767" attributes="0"/>
+                              <Component id="jScrollPane1" alignment="0" pref="284" max="32767" attributes="0"/>
                               <Component id="jCheckBoxShuffle" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jTextFieldColumns" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jCheckBoxNone" alignment="0" min="-2" max="-2" attributes="0"/>

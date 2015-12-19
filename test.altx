@@ -6,15 +6,15 @@
 
 
 Challenge accepted</description>
-        <shuffle>false</shuffle>
+        <shuffle>true</shuffle>
         <columns>2</columns>
         <none>false</none>
         <none-text>Aucune des réponses ci-dessus. JAMAIS !</none-text>
         <blocks>false</blocks>
-        <format>B4</format>
-        <code>0</code>
+        <format>A4</format>
+        <code>8</code>
         <code-text>Coder votre numéro étudiant</code-text>
-        <language>DE</language>
+        <language>FR</language>
         <question-text>Question</question-text>
         <name-text>Nom et prénom</name-text>
         <even-pages>false</even-pages>
@@ -40,12 +40,12 @@ Challenge accepted</description>
             <answers>
                 <answer>
                     <text>Faut voir...</text>
-                    <score>0</score>
+                    <score>-1</score>
                     <correct>false</correct>
                 </answer>
                 <answer>
                     <text>Beige</text>
-                    <score>0</score>
+                    <score>2</score>
                     <correct>true</correct>
                 </answer>
             </answers>
@@ -63,36 +63,36 @@ Challenge accepted</description>
                 </answer>
                 <answer>
                     <text>Beige</text>
-                    <score>0</score>
+                    <score>-2</score>
                     <correct>false</correct>
                 </answer>
                 <answer>
                     <text>Seulement le dimanche</text>
-                    <score>0</score>
+                    <score>3</score>
                     <correct>true</correct>
                 </answer>
             </answers>
         </question>
         <question>
             <text>Nouvelle question du siècle</text>
-            <type>Simple</type>
+            <type>Multiple</type>
             <nb-lines>0</nb-lines>
             <group>Catégorie</group>
             <answers>
                 <answer>
                     <text>Réponse A</text>
-                    <score>0</score>
+                    <score>-3</score>
                     <correct>false</correct>
                 </answer>
                 <answer>
                     <text>Nouvelle PAF!</text>
-                    <score>0</score>
+                    <score>1</score>
                     <correct>true</correct>
                 </answer>
                 <answer>
                     <text>JAMAIS!</text>
-                    <score>0</score>
-                    <correct>false</correct>
+                    <score>1</score>
+                    <correct>true</correct>
                 </answer>
             </answers>
         </question>
@@ -104,6 +104,34 @@ Challenge accepted</description>
             <answers>
                 <answer>
                     <text>Essaie demain</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Essaie hier</text>
+                    <score>2</score>
+                    <correct>true</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Question ouverte de l'année</text>
+            <type>Ouverte</type>
+            <nb-lines>2</nb-lines>
+            <group>Défaut</group>
+            <answers>
+                <answer>
+                    <text>Parfait</text>
+                    <score>2</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>Moyen</text>
+                    <score>1</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Nul</text>
                     <score>0</score>
                     <correct>false</correct>
                 </answer>

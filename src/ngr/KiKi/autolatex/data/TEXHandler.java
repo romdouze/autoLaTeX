@@ -47,15 +47,7 @@ public class TEXHandler
 				test.getQuestions ().stream ().filter ((q) -> q.getGroup ().equals (g)).forEach ((q) ->
 				{
 					print.printf ("\\element{%s}{\n", Utils.normalize (g));
-					print.printf ("  \\begin{question}{%s}\n", q.getShortName ().isEmpty () ? q.getText ().substring (0, 10) + "__" + (int) (Math.random () * 1000) : q.getShortName ());
-					print.println ("    " + q.getText ());
-					print.println ("    \\begin{reponses}");
-					q.getAnswers ().stream ().forEach ((a) ->
-					{
-						print.printf ("      \\%s{%s}\n", a.isCorrect () ? "bonne" : "mauvaise", a.getText ());
-					});
-					print.println ("    \\end{reponses}");
-					print.println ("  \\end{question}");
+					writeQuestion (print, q);
 					print.println ("}\n");
 				});
 			});
@@ -107,6 +99,34 @@ public class TEXHandler
 			{
 				Logger.getLogger (TEXHandler.class.getName ()).log (Level.SEVERE, null, ex);
 			}
+		}
+	}
+
+	private static void writeQuestion (PrintWriter print, Question q)
+	{
+		if (q.getType () == Question.TYPE.OPEN)
+		{
+			print.println ("  \\begin{question}{" + q.getShortNameOrGenerate () + "}");
+			print.println ("    " + q.getText ());
+			print.print ("    \\AMCOpen{lines=" + q.getNbLines () + "}{");
+			q.getAnswers ().stream ().forEach ((a) ->
+			{
+				print.print ("\\" + (a.isCorrect () ? "correct" : "wrong") + "choice[" + a.getText () + "]{" + Utils.normalize (a.getText () + "}\\scoring{" + a.getScore () + "}"));
+			});
+			print.println ("}");
+			print.println ("\\end{question}\n");
+		}
+		else
+		{
+			print.printf ("  \\begin{%s}{%s}\n", q.getType () == Question.TYPE.SIMPLE ? "question" : "questionmult", q.getShortNameOrGenerate ());
+			print.println ("    " + q.getText ());
+			print.println ("    \\begin{reponses}");
+			q.getAnswers ().stream ().forEach ((a) ->
+			{
+				print.printf ("      \\%s{%s}\n", a.isCorrect () ? "bonne" : "mauvaise", a.getText ());
+			});
+			print.println ("    \\end{reponses}");
+			print.println ("  \\end{question" + (q.getType () == Question.TYPE.MULTIPLE ? "mult" : "") + "}");
 		}
 	}
 }

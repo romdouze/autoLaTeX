@@ -125,6 +125,7 @@ public class XMLHandler
 		for (Node n : findAllSubNode (node, "answer"))
 		{
 			Answer a = new Answer (findSubNode (n, "text").getTextContent (), Boolean.valueOf (findSubNode (n, "correct").getTextContent ()));
+			a.setScore (Integer.valueOf (findSubNode (n, "score").getTextContent ()));
 
 			answers.add (a);
 		}
