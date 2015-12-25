@@ -185,7 +185,6 @@
                           <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jComboBoxFormat" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextFieldCode" min="-2" max="-2" attributes="0"/>
                               <Component id="jTextFieldCodeText" min="-2" max="-2" attributes="0"/>
                               <Component id="jComboBoxLanguage" min="-2" max="-2" attributes="0"/>
                               <Component id="jTextFieldQuestionText" min="-2" max="-2" attributes="0"/>
@@ -193,6 +192,7 @@
                               <Component id="jCheckBoxEvenPages" min="-2" max="-2" attributes="0"/>
                               <Component id="jCheckBoxBlankPage" min="-2" max="-2" attributes="0"/>
                               <Component id="jComboBoxColor" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextFieldCode" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="103" max="32767" attributes="0"/>
                       </Group>
@@ -393,7 +393,7 @@
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -409,15 +409,19 @@
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jTextFieldColumns" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jTextFieldDefaultScoreIncorrect" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jCheckBoxNone" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jTextFieldNoneText" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jCheckBoxBlocks" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jTextFieldTitle" alignment="0" max="32767" attributes="0"/>
                               <Component id="jScrollPane1" alignment="0" pref="273" max="32767" attributes="0"/>
-                              <Component id="jTextFieldDefaultScoreCorrect" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jCheckBoxShuffle" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="jTextFieldDefaultScoreIncorrect" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jTextFieldDefaultScoreCorrect" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jCheckBoxBlocks" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="jTextFieldColumns" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jCheckBoxShuffle" alignment="0" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace pref="21" max="32767" attributes="0"/>
                       </Group>
@@ -567,22 +571,30 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel23">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Score bonne r&#xe9;ponse"/>
+                    <Property name="text" type="java.lang.String" value="Score par d&#xe9;faut bonne r&#xe9;ponse"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextFieldDefaultScoreCorrect">
                   <Properties>
+                    <Property name="columns" type="int" value="1"/>
                     <Property name="text" type="java.lang.String" value="2"/>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[12, 20]"/>
+                    </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel24">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Score mauvaise r&#xe9;ponse"/>
+                    <Property name="text" type="java.lang.String" value="Score par d&#xe9;fautmauvaise r&#xe9;ponse"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextFieldDefaultScoreIncorrect">
                   <Properties>
+                    <Property name="columns" type="int" value="1"/>
                     <Property name="text" type="java.lang.String" value="0"/>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[12, 20]"/>
+                    </Property>
                   </Properties>
                 </Component>
               </SubComponents>

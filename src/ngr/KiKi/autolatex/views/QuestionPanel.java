@@ -8,6 +8,7 @@ package ngr.KiKi.autolatex.views;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -32,7 +33,7 @@ import ngr.KiKi.autolatex.utils.Utils;
  */
 public class QuestionPanel extends javax.swing.JPanel
 {
-
+	
 	private final Question question;
 	private final JFrameMain parent;
 	private boolean init;
@@ -44,55 +45,55 @@ public class QuestionPanel extends javax.swing.JPanel
 	{
 		initComponents ();
 		init = true;
-
+		
 		question = q;
 		parent = p;
-
+		
 		init ();
-
+		
 		init = false;
 	}
-
+	
 	private void init ()
 	{
 		DocumentListener dc = new DocumentListener ()
 		{
-
+			
 			@Override
 			public void insertUpdate (DocumentEvent de)
 			{
 				updateValues ();
 			}
-
+			
 			@Override
 			public void removeUpdate (DocumentEvent de)
 			{
 				updateValues ();
 			}
-
+			
 			@Override
 			public void changedUpdate (DocumentEvent de)
 			{
 				updateValues ();
 			}
-
+			
 		};
-
+		
 		jTextAreaText.setText (question.toString ());
 		jTextAreaText.getDocument ().addDocumentListener (dc);
-
+		
 		jTextFieldNbLines.setText ("" + question.getNbLines ());
 		jTextFieldNbLines.getDocument ().addDocumentListener (dc);
-
+		
 		jComboBoxType.setSelectedItem (question.getType ().toString ());
-
+		
 		initAnswers ();
-
+		
 		initGroups ();
-
+		
 		updateDisplay ();
 	}
-
+	
 	private void initGroups ()
 	{
 		jComboBoxGroup.removeAllItems ();
@@ -106,36 +107,44 @@ public class QuestionPanel extends javax.swing.JPanel
 		jComboBoxGroup.setSelectedItem (question.getGroup ());
 		jComboBoxGroup.setRenderer (renderer);
 	}
-
+	
 	private void initAnswers ()
 	{
 		jPanelAnswers.removeAll ();
 		jPanelAnswers.setLayout (new MigLayout (new LC ().fillX ().hideMode (3)));
-
+		
 		question.getAnswers ().stream ().forEach ((a) ->
 		{
-			jPanelAnswers.add (new AnswerPanel (this, a), new CC ().wrap ().growX ());
+			AnswerPanel ap = new AnswerPanel (this, a);
+			ap.setScoreVisibility (question.getType () != Question.TYPE.INFO);
+			jPanelAnswers.add (ap, new CC ().wrap ().growX ());
 		});
-
+		
 		jPanelAnswers.add (jButtonAddAnswer);
 	}
-
+	
 	public void removeAnswer (AnswerPanel ap)
 	{
 		question.getAnswers ().remove (ap.getAnswer ());
 		initAnswers ();
-
+		
 		updateDisplay ();
 	}
-
+	
 	private void updateDisplay ()
 	{
 		((TitledBorder) jScrollPaneAnswers.getBorder ()).setTitle (question.getAnswers ().size () + " réponses");
-
+		jPanelNbLines.setVisible (question.getType () == Question.TYPE.OPEN);
+		Arrays.stream (jPanelAnswers.getComponents ()).filter ((c) -> c instanceof AnswerPanel).forEach ((a) ->
+		{
+			AnswerPanel ap = (AnswerPanel) a;
+			ap.setScoreVisibility (question.getType () != Question.TYPE.INFO);
+		});
+		
 		parent.updateQR ();
 		parent.repaint ();
 	}
-
+	
 	private void updateValues ()
 	{
 		if (!init)
@@ -149,12 +158,18 @@ public class QuestionPanel extends javax.swing.JPanel
 			}
 			catch (NumberFormatException ex)
 			{
-
+				
 			}
 			parent.updateQR ();
 		}
 	}
-
+	
+	public void checkMultiple ()
+	{
+		if (question.getType () != Question.TYPE.MULTIPLE && question.getAnswers ().stream ().filter ((a) -> a.isCorrect ()).count () > 1)
+			jComboBoxType.setSelectedItem ("Multiple");
+	}
+	
 	public JFrameMain getFrame ()
 	{
 		return parent;
@@ -175,8 +190,9 @@ public class QuestionPanel extends javax.swing.JPanel
         jComboBoxType = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         jButtonAddPicture = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
+        jPanelNbLines = new javax.swing.JPanel();
         jTextFieldNbLines = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
         jScrollPaneAnswers = new javax.swing.JScrollPane();
         jPanelAnswers = new javax.swing.JPanel();
         jButtonAddAnswer = new javax.swing.JButton();
@@ -208,28 +224,42 @@ public class QuestionPanel extends javax.swing.JPanel
 
         jButtonAddPicture.setText("Ajouter photo");
 
+        jTextFieldNbLines.setText("2");
+
         jLabel2.setText("Nombre de lignes");
 
-        jTextFieldNbLines.setText("2");
+        javax.swing.GroupLayout jPanelNbLinesLayout = new javax.swing.GroupLayout(jPanelNbLines);
+        jPanelNbLines.setLayout(jPanelNbLinesLayout);
+        jPanelNbLinesLayout.setHorizontalGroup(
+            jPanelNbLinesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelNbLinesLayout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldNbLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanelNbLinesLayout.setVerticalGroup(
+            jPanelNbLinesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelNbLinesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(jLabel2)
+                .addComponent(jTextFieldNbLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
 
         javax.swing.GroupLayout jPanelConfigLayout = new javax.swing.GroupLayout(jPanelConfig);
         jPanelConfig.setLayout(jPanelConfigLayout);
         jPanelConfigLayout.setHorizontalGroup(
             jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelConfigLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelConfigLayout.createSequentialGroup()
+                        .addGap(68, 68, 68)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBoxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
                         .addComponent(jButtonAddPicture))
                     .addGroup(jPanelConfigLayout.createSequentialGroup()
-                        .addComponent(jTextFieldNbLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap()
+                        .addComponent(jPanelNbLines, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanelConfigLayout.setVerticalGroup(
@@ -240,11 +270,9 @@ public class QuestionPanel extends javax.swing.JPanel
                         .addComponent(jComboBoxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1))
                     .addComponent(jButtonAddPicture))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextFieldNbLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 60, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanelNbLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 61, Short.MAX_VALUE))
         );
 
         jScrollPaneAnswers.setBorder(javax.swing.BorderFactory.createTitledBorder("Réponses"));
@@ -332,7 +360,7 @@ public class QuestionPanel extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneAnswers, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                .addComponent(jScrollPaneAnswers, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -340,7 +368,7 @@ public class QuestionPanel extends javax.swing.JPanel
 
     private void jComboBoxGroupActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jComboBoxGroupActionPerformed
     {//GEN-HEADEREND:event_jComboBoxGroupActionPerformed
-
+		
 		updateValues ();
     }//GEN-LAST:event_jComboBoxGroupActionPerformed
 
@@ -351,16 +379,16 @@ public class QuestionPanel extends javax.swing.JPanel
 		jPanelAnswers.remove (jButtonAddAnswer);
 		jPanelAnswers.add (new AnswerPanel (this, newAnswer), new CC ().wrap ().growX ());
 		jPanelAnswers.add (jButtonAddAnswer);
-
+		
 		updateDisplay ();
     }//GEN-LAST:event_jButtonAddAnswerActionPerformed
 
     private void jButtonAddCategoryActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAddCategoryActionPerformed
     {//GEN-HEADEREND:event_jButtonAddCategoryActionPerformed
-
+		
 		JPanel panel = new JPanel ();
 		JDialog dialog = new JDialog (parent, "Nouvelle catégorie", true);
-
+		
 		JTextField tf = new JTextField ("Nouvelle catégorie...");
 		DefaultComboBoxModel cbm = new DefaultComboBoxModel ();
 		Utils.colors.keySet ().stream ().forEach ((s) ->
@@ -375,15 +403,15 @@ public class QuestionPanel extends javax.swing.JPanel
 		cols.setSelectedItem ("Noir");
 		panel.add (tf);
 		panel.add (cols);
-
+		
 		JButton ok = new JButton ("OK");
 		JButton cancel = new JButton ("Annuler");
-
+		
 		ok.addActionListener ((ActionEvent ae) ->
 		{
 			if (tf.getText ().equals ("Nouvelle catégorie...") || tf.getText ().isEmpty () || parent.getGroups ().containsKey (tf.getText ()))
 				dialog.dispose ();
-
+			
 			String newGroup = tf.getText ();
 			parent.addGroup (newGroup, Utils.colors.get ((String) cols.getSelectedItem ()));
 			initGroups ();
@@ -395,13 +423,13 @@ public class QuestionPanel extends javax.swing.JPanel
 		{
 			dialog.dispose ();
 		});
-
+		
 		JButton[] buttons =
 		{
 			ok, cancel
 		};
 		JOptionPane optionPane = new JOptionPane (panel, JOptionPane.PLAIN_MESSAGE, JOptionPane.YES_NO_OPTION, null, buttons, ok);
-
+		
 		dialog.getContentPane ().add (optionPane);
 		dialog.setLocationRelativeTo (parent);
 		dialog.pack ();
@@ -411,7 +439,10 @@ public class QuestionPanel extends javax.swing.JPanel
     private void jComboBoxTypeActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jComboBoxTypeActionPerformed
     {//GEN-HEADEREND:event_jComboBoxTypeActionPerformed
 		if (!((String) jComboBoxType.getSelectedItem ()).toUpperCase ().equals (question.getType ().toString ()))
+		{
 			updateValues ();
+			updateDisplay ();
+		}
     }//GEN-LAST:event_jComboBoxTypeActionPerformed
 
 
@@ -426,6 +457,7 @@ public class QuestionPanel extends javax.swing.JPanel
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelAnswers;
     private javax.swing.JPanel jPanelConfig;
+    private javax.swing.JPanel jPanelNbLines;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPaneAnswers;
     private javax.swing.JTextArea jTextAreaText;

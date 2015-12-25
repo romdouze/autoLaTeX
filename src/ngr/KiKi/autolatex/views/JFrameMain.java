@@ -366,24 +366,48 @@ public class JFrameMain extends javax.swing.JFrame
 //		repaint ();
 	}
 
-	public void exit ()
+	public void confirmExit ()
 	{
-		if (JOptionPane.showOptionDialog (this, "Êtes-vous sûr de vouloir quitter ?", "Quitter", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]
+		int i = JOptionPane.showOptionDialog (this, "Êtes-vous sûr de vouloir quitter ?", "Quitter", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[]
 		{
-			"Oui", "Non"
-		}, null) == JOptionPane.YES_OPTION)
+			"Quitter", "Annuler", "Sauvegarder"
+		}, null);
+		if (i == JOptionPane.YES_OPTION)
+			exit ();
+		else if (i == JOptionPane.CANCEL_OPTION)
 		{
-			try
-			{
-				FileOutputStream fos = new FileOutputStream (new File (Utils.PROPERTIES_FILENAME));
-				AMCAutoLateX.properties.store (fos, "");
-			}
-			catch (IOException ex)
-			{
-				Logger.getLogger (JFrameMain.class.getName ()).log (Level.SEVERE, null, ex);
-			}
-			dispose ();
+			save ();
+			exit ();
 		}
+	}
+
+	private void exit ()
+	{
+		try
+		{
+			FileOutputStream fos = new FileOutputStream (new File (Utils.PROPERTIES_FILENAME));
+			AMCAutoLateX.properties.store (fos, "");
+		}
+		catch (IOException ex)
+		{
+			Logger.getLogger (JFrameMain.class.getName ()).log (Level.SEVERE, null, ex);
+		}
+		dispose ();
+	}
+
+	private void save ()
+	{
+		JFileChooser chooser = new JFileChooser ();
+		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier AutoLaTeX", Utils.EXTENSION, Utils.EXTENSION.toUpperCase ()));
+		chooser.setCurrentDirectory (new File (AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH) == null ? "" : AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH)));
+		chooser.setAcceptAllFileFilterUsed (false);
+
+		if (chooser.showSaveDialog (this) != JFileChooser.APPROVE_OPTION)
+			return;
+
+		File file = chooser.getSelectedFile ();
+		AMCAutoLateX.properties.setProperty (Utils.PROPERTIES_RECENT_PATH, file.getParent ());
+		XMLHandler.XMLWriter (file.getAbsolutePath (), test);
 	}
 
 	public Test getTest ()
@@ -530,14 +554,14 @@ public class JFrameMain extends javax.swing.JFrame
                 .addGap(41, 41, 41)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jComboBoxFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldCodeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxLanguage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldQuestionText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldNameText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCheckBoxEvenPages)
                     .addComponent(jCheckBoxBlankPage)
-                    .addComponent(jComboBoxColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldCode, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(103, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -620,20 +644,24 @@ public class JFrameMain extends javax.swing.JFrame
 
         jTextFieldNoneText.setText("Aucune des réponses ci-dessus");
 
-        jLabel23.setText("Score bonne réponse");
+        jLabel23.setText("Score par défaut bonne réponse");
 
+        jTextFieldDefaultScoreCorrect.setColumns(1);
         jTextFieldDefaultScoreCorrect.setText("2");
+        jTextFieldDefaultScoreCorrect.setMinimumSize(new java.awt.Dimension(12, 20));
 
-        jLabel24.setText("Score mauvaise réponse");
+        jLabel24.setText("Score par défautmauvaise réponse");
 
+        jTextFieldDefaultScoreIncorrect.setColumns(1);
         jTextFieldDefaultScoreIncorrect.setText("0");
+        jTextFieldDefaultScoreIncorrect.setMinimumSize(new java.awt.Dimension(12, 20));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(1, 1, 1)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -648,15 +676,17 @@ public class JFrameMain extends javax.swing.JFrame
                     .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextFieldColumns, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldDefaultScoreIncorrect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jCheckBoxNone)
                     .addComponent(jTextFieldNoneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBoxBlocks)
                     .addComponent(jTextFieldTitle)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-                    .addComponent(jTextFieldDefaultScoreCorrect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jCheckBoxShuffle))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jTextFieldDefaultScoreIncorrect, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextFieldDefaultScoreCorrect, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jCheckBoxBlocks, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jTextFieldColumns, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jCheckBoxShuffle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -928,7 +958,7 @@ public class JFrameMain extends javax.swing.JFrame
     private void jMenuItemExitActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItemExitActionPerformed
     {//GEN-HEADEREND:event_jMenuItemExitActionPerformed
 
-		exit ();
+		confirmExit ();
     }//GEN-LAST:event_jMenuItemExitActionPerformed
 
     private void jMenuItemNewActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItemNewActionPerformed
@@ -938,17 +968,7 @@ public class JFrameMain extends javax.swing.JFrame
 
     private void jMenuItemSaveActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItemSaveActionPerformed
     {//GEN-HEADEREND:event_jMenuItemSaveActionPerformed
-		JFileChooser chooser = new JFileChooser ();
-		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier AutoLaTeX", Utils.EXTENSION, Utils.EXTENSION.toUpperCase ()));
-		chooser.setCurrentDirectory (new File (AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH) == null ? "" : AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH)));
-		chooser.setAcceptAllFileFilterUsed (false);
-
-		if (chooser.showSaveDialog (this) != JFileChooser.APPROVE_OPTION)
-			return;
-
-		File file = chooser.getSelectedFile ();
-		AMCAutoLateX.properties.setProperty (Utils.PROPERTIES_RECENT_PATH, file.getParent ());
-		XMLHandler.XMLWriter (file.getAbsolutePath (), test);
+		save ();
     }//GEN-LAST:event_jMenuItemSaveActionPerformed
 
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItemOpenActionPerformed

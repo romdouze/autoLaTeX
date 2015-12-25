@@ -97,7 +97,7 @@ public class AMCAutoLateX
 				@Override
 				public void windowClosing (WindowEvent e)
 				{
-					frame.exit ();
+					frame.confirmExit ();
 				}
 			});
 			frame.setVisible (true);
