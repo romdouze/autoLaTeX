@@ -219,8 +219,8 @@ public class JFrameMain extends javax.swing.JFrame
 		{
 			test.setColumns (Integer.valueOf (jTextFieldColumns.getText ()));
 			test.setCode (Integer.valueOf (jTextFieldCode.getText ()));
-			test.setDefaultScoreCorrect (Integer.valueOf (jTextFieldDefaultScoreCorrect.getText ()));
-			test.setDefaultScoreIncorrect (Integer.valueOf (jTextFieldDefaultScoreIncorrect.getText ()));
+			test.setDefaultScoreCorrect (Double.valueOf (jTextFieldDefaultScoreCorrect.getText ()));
+			test.setDefaultScoreIncorrect (Double.valueOf (jTextFieldDefaultScoreIncorrect.getText ()));
 		}
 		catch (NumberFormatException ex)
 		{
@@ -540,7 +540,7 @@ public class JFrameMain extends javax.swing.JFrame
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(47, 47, 47)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -551,7 +551,7 @@ public class JFrameMain extends javax.swing.JFrame
                     .addComponent(jLabel16, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(41, 41, 41)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jComboBoxFormat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldCodeText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -562,7 +562,7 @@ public class JFrameMain extends javax.swing.JFrame
                     .addComponent(jCheckBoxBlankPage)
                     .addComponent(jComboBoxColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldCode, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -632,6 +632,7 @@ public class JFrameMain extends javax.swing.JFrame
         jTextAreaDescription.setRows(3);
         jScrollPane1.setViewportView(jTextAreaDescription);
 
+        jTextFieldColumns.setColumns(3);
         jTextFieldColumns.setText("2");
 
         jCheckBoxNone.addActionListener(new java.awt.event.ActionListener()
@@ -646,13 +647,13 @@ public class JFrameMain extends javax.swing.JFrame
 
         jLabel23.setText("Score par défaut bonne réponse");
 
-        jTextFieldDefaultScoreCorrect.setColumns(1);
+        jTextFieldDefaultScoreCorrect.setColumns(3);
         jTextFieldDefaultScoreCorrect.setText("2");
         jTextFieldDefaultScoreCorrect.setMinimumSize(new java.awt.Dimension(12, 20));
 
-        jLabel24.setText("Score par défautmauvaise réponse");
+        jLabel24.setText("Score par défaut mauvaise réponse");
 
-        jTextFieldDefaultScoreIncorrect.setColumns(1);
+        jTextFieldDefaultScoreIncorrect.setColumns(3);
         jTextFieldDefaultScoreIncorrect.setText("0");
         jTextFieldDefaultScoreIncorrect.setMinimumSize(new java.awt.Dimension(12, 20));
 
@@ -676,18 +677,21 @@ public class JFrameMain extends javax.swing.JFrame
                     .addComponent(jLabel24, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBoxNone)
-                    .addComponent(jTextFieldNoneText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldTitle)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jTextFieldDefaultScoreIncorrect, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextFieldDefaultScoreCorrect, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jCheckBoxBlocks, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jTextFieldColumns, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jCheckBoxShuffle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                    .addComponent(jTextFieldNoneText)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBoxNone)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jTextFieldDefaultScoreIncorrect, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jTextFieldDefaultScoreCorrect, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jCheckBoxBlocks, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jTextFieldColumns, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jCheckBoxShuffle, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(66, 66, 66))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -777,9 +781,9 @@ public class JFrameMain extends javax.swing.JFrame
         jPanelDetailsLayout.setHorizontalGroup(
             jPanelDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDetailsLayout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanelDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
@@ -974,7 +978,7 @@ public class JFrameMain extends javax.swing.JFrame
     private void jMenuItemOpenActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItemOpenActionPerformed
     {//GEN-HEADEREND:event_jMenuItemOpenActionPerformed
 		JFileChooser chooser = new JFileChooser ();
-		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier AutoLaTeX", Utils.EXTENSION, Utils.EXTENSION.toUpperCase ()));
+		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier AutoLaTeX (" + Utils.EXTENSION + ")", Utils.EXTENSION, Utils.EXTENSION.toUpperCase ()));
 		chooser.setCurrentDirectory (new File (AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH) == null ? "" : AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH)));
 		chooser.setAcceptAllFileFilterUsed (false);
 
@@ -992,7 +996,7 @@ public class JFrameMain extends javax.swing.JFrame
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jMenuItem1ActionPerformed
     {//GEN-HEADEREND:event_jMenuItem1ActionPerformed
 		JFileChooser chooser = new JFileChooser ();
-		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier LaTeX", Utils.TEX_EXTENSION, Utils.TEX_EXTENSION.toUpperCase ()));
+		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier LaTeX (" + Utils.TEX_EXTENSION + ")", Utils.TEX_EXTENSION, Utils.TEX_EXTENSION.toUpperCase ()));
 		chooser.setCurrentDirectory (new File (AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH) == null ? "" : AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH)));
 		chooser.setAcceptAllFileFilterUsed (false);
 

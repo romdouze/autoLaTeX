@@ -20,8 +20,8 @@ Challenge accepted</description>
         <even-pages>false</even-pages>
         <blank-page>true</blank-page>
         <color>Rose</color>
-		<default-score-correct>3</default-score-correct>
-		<default-score-incorrect>-1</default-score-incorrect>
+        <default-score-correct>3</default-score-correct>
+        <default-score-incorrect>-1</default-score-incorrect>
     </settings>
     <groups>
         <group>
@@ -39,6 +39,7 @@ Challenge accepted</description>
             <type>Simple</type>
             <nb-lines>0</nb-lines>
             <group>Catégorie</group>
+            <short-name/>
             <answers>
                 <answer>
                     <text>Faut voir...</text>
@@ -57,6 +58,7 @@ Challenge accepted</description>
             <type>Simple</type>
             <nb-lines>0</nb-lines>
             <group>Défaut</group>
+            <short-name/>
             <answers>
                 <answer>
                     <text>Faut voir...</text>
@@ -80,6 +82,7 @@ Challenge accepted</description>
             <type>Multiple</type>
             <nb-lines>0</nb-lines>
             <group>Catégorie</group>
+            <short-name>century</short-name>
             <answers>
                 <answer>
                     <text>Réponse A</text>
@@ -103,6 +106,7 @@ Challenge accepted</description>
             <type>Simple</type>
             <nb-lines>0</nb-lines>
             <group>Défaut</group>
+            <short-name>new</short-name>
             <answers>
                 <answer>
                     <text>Essaie demain</text>
@@ -121,6 +125,7 @@ Challenge accepted</description>
             <type>Ouverte</type>
             <nb-lines>2</nb-lines>
             <group>Défaut</group>
+            <short-name>openstuff</short-name>
             <answers>
                 <answer>
                     <text>Parfait</text>

@@ -89,8 +89,8 @@ public class XMLHandler
 		test.setEvenPages (Boolean.valueOf (findSubNode (node, "even-pages").getTextContent ()));
 		test.setBlankPage (Boolean.valueOf (findSubNode (node, "blank-page").getTextContent ()));
 		test.setColor (findSubNode (node, "color").getTextContent ());
-		test.setDefaultScoreCorrect (Integer.valueOf (findSubNode (node, "default-score-correct").getTextContent ()));
-		test.setDefaultScoreIncorrect (Integer.valueOf (findSubNode (node, "default-score-incorrect").getTextContent ()));
+		test.setDefaultScoreCorrect (Double.valueOf (findSubNode (node, "default-score-correct").getTextContent ()));
+		test.setDefaultScoreIncorrect (Double.valueOf (findSubNode (node, "default-score-incorrect").getTextContent ()));
 	}
 
 	private static Map<String, Color> readGroups (Node node)
@@ -112,6 +112,7 @@ public class XMLHandler
 			Question q = new Question (findSubNode (n, "text").getTextContent (), Question.TYPE.getType (findSubNode (n, "type").getTextContent ()));
 			q.setGroup (findSubNode (n, "group").getTextContent ());
 			q.setNbLines (Integer.valueOf (findSubNode (n, "nb-lines").getTextContent ()));
+			q.setShortName (findSubNode (n, "short-name").getTextContent ());
 			q.setAnswers (readAnswers (findSubNode (n, "answers")));
 
 			questions.add (q);
@@ -127,7 +128,7 @@ public class XMLHandler
 		for (Node n : findAllSubNode (node, "answer"))
 		{
 			Answer a = new Answer (findSubNode (n, "text").getTextContent (), Boolean.valueOf (findSubNode (n, "correct").getTextContent ()));
-			a.setScore (Integer.valueOf (findSubNode (n, "score").getTextContent ()));
+			a.setScore (Double.valueOf (findSubNode (n, "score").getTextContent ()));
 
 			answers.add (a);
 		}
@@ -327,6 +328,10 @@ public class XMLHandler
 
 			e = dom.createElement ("group");
 			e.appendChild (dom.createTextNode (q.getGroup ()));
+			question.appendChild (e);
+
+			e = dom.createElement ("short-name");
+			e.appendChild (dom.createTextNode (q.getShortName ()));
 			question.appendChild (e);
 
 			question.appendChild (writeAnswers (dom, q.getAnswers ()));

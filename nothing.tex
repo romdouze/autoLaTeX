@@ -1,0 +1,109 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage[francais,bloc,completemulti]{automultiplechoice}
+\usepackage{multicol}
+
+\begin{document}
+
+\AMCtext{none}{Aucune des réponses ci-dessus}
+
+%%% préparation des groupes
+
+\element{Defaut}{
+  \begin{question}{Quelle eta_790}
+    Quelle était la couleur du cheval blanc d'Henry 0 ? C'est la question ultime
+    \begin{multicols}{2}
+    \begin{reponses}
+      \mauvaise{Faut voir...}
+      \mauvaise{Beige}
+    \end{reponses}
+    \end{multicols}
+  \end{question}
+}
+
+\element{Defaut}{
+  \begin{question}{Quelle eta_131}
+    Quelle était la couleur du cheval blanc d'Henry 1 ? C'est la question ultime
+    \begin{multicols}{2}
+    \begin{reponses}
+      \mauvaise{Faut voir...}
+      \mauvaise{Beige}
+    \end{reponses}
+    \end{multicols}
+  \end{question}
+}
+
+\element{Defaut}{
+  \begin{question}{Quelle eta_718}
+    Quelle était la couleur du cheval blanc d'Henry 2 ? C'est la question ultime
+    \begin{multicols}{2}
+    \begin{reponses}
+      \mauvaise{Faut voir...}
+      \mauvaise{Beige}
+    \end{reponses}
+    \end{multicols}
+  \end{question}
+}
+
+\element{Defaut}{
+  \begin{question}{Quelle eta_762}
+    Quelle était la couleur du cheval blanc d'Henry 3 ? C'est la question ultime
+    \begin{multicols}{2}
+    \begin{reponses}
+      \mauvaise{Faut voir...}
+      \mauvaise{Beige}
+    \end{reponses}
+    \end{multicols}
+  \end{question}
+}
+
+\element{Defaut}{
+  \begin{question}{Quelle eta_32}
+    Quelle était la couleur du cheval blanc d'Henry 4 ? C'est la question ultime
+    \begin{multicols}{2}
+    \begin{reponses}
+      \mauvaise{Faut voir...}
+      \mauvaise{Beige}
+    \end{reponses}
+    \end{multicols}
+  \end{question}
+}
+
+%%% fabrication des copies
+
+\exemplaire{10}{
+
+%%% debut de l'en-tête des copies :
+
+\noindent{\bf QCM \hfill TEST}
+
+\vspace*{.5cm}
+\begin{minipage}{.4\linewidth}
+  \centering\large\bf Intitulé du devoir
+\end{minipage}
+\champnom{\fbox{\begin{minipage}{.5\linewidth}
+Nom et prénom
+
+\vspace*{.5cm}\dotfill
+\vspace*{1mm}
+\end{minipage}}}
+
+%%% fin de l'en-tête
+
+\begin{center}
+  \hrule\vspace{2mm}
+  \bf\Large Défaut
+  \vspace{2mm}\hrule
+\end{center}
+
+\melangegroupe{Defaut}
+\restituegroupe{Defaut}
+
+\clearpage
+
+}
+
+\end{document}

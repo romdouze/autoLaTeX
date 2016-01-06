@@ -38,8 +38,14 @@ public class TEXHandler
 			print.printf ("\\documentclass[%spaper]{article}\n\n", test.getFormat ().toString ().toLowerCase ());
 			print.println ("\\usepackage[utf8x]{inputenc}");
 			print.println ("\\usepackage[T1]{fontenc}\n");
-			print.println ("\\usepackage[francais,bloc,completemulti]{automultiplechoice}");
+			print.println ("\\usepackage[francais" + (test.isBlocks () ? ",bloc" : "") + (test.isNone () ? ",completemulti" : "") + "]{automultiplechoice}");
+			if (test.getColumns () > 1)
+				print.println ("\\usepackage{multicol}\n");
+
 			print.println ("\\begin{document}\n");
+
+			if (!test.getNoneText ().isEmpty ())
+				print.println ("\\AMCtext{none}{" + test.getNoneText () + "}\n");
 
 			print.println ("%%% préparation des groupes\n");
 			test.getGroups ().keySet ().stream ().forEach ((g) ->
@@ -47,7 +53,7 @@ public class TEXHandler
 				test.getQuestions ().stream ().filter ((q) -> q.getGroup ().equals (g)).forEach ((q) ->
 				{
 					print.printf ("\\element{%s}{\n", Utils.normalize (g));
-					writeQuestion (print, q);
+					writeQuestion (print, q, test);
 					print.println ("}\n");
 				});
 			});
@@ -102,11 +108,11 @@ public class TEXHandler
 		}
 	}
 
-	private static void writeQuestion (PrintWriter print, Question q)
+	private static void writeQuestion (PrintWriter print, Question q, Test test)
 	{
 		if (q.getType () == Question.TYPE.OPEN)
 		{
-			print.println ("  \\begin{question}{" + q.getShortNameOrGenerate () + "}");
+			print.println ("  \\begin{question}{" + Utils.normalize (q.getShortNameOrGenerate ()) + "}");
 			print.println ("    " + q.getText ());
 			print.print ("    \\AMCOpen{lines=" + q.getNbLines () + "}{");
 			q.getAnswers ().stream ().forEach ((a) ->
@@ -120,12 +126,16 @@ public class TEXHandler
 		{
 			print.printf ("  \\begin{%s}{%s}\n", q.getType () == Question.TYPE.SIMPLE ? "question" : "questionmult", q.getShortNameOrGenerate ());
 			print.println ("    " + q.getText ());
+			if (test.getColumns () > 1)
+				print.println ("    \\begin{multicols}{" + test.getColumns () + "}");
 			print.println ("    \\begin{reponses}");
 			q.getAnswers ().stream ().forEach ((a) ->
 			{
 				print.printf ("      \\%s{%s}\n", a.isCorrect () ? "bonne" : "mauvaise", a.getText ());
 			});
 			print.println ("    \\end{reponses}");
+			if (test.getColumns () > 1)
+				print.println ("    \\end{multicols}");
 			print.println ("  \\end{question" + (q.getType () == Question.TYPE.MULTIPLE ? "mult" : "") + "}");
 		}
 	}

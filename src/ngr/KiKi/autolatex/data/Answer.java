@@ -13,7 +13,7 @@ public class Answer
 {
 
 	private String text;
-	private int score;
+	private double score;
 	private boolean correct;
 
 	public Answer (String t, boolean c)
@@ -42,12 +42,12 @@ public class Answer
 		this.correct = correct;
 	}
 
-	public int getScore ()
+	public double getScore ()
 	{
 		return score;
 	}
 
-	public void setScore (int score)
+	public void setScore (double score)
 	{
 		this.score = score;
 	}

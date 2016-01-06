@@ -37,8 +37,8 @@ public class Test
 	private boolean evenPages;
 	private boolean blankPage;
 	private String color;
-	private int defaultScoreCorrect;
-	private int defaultScoreIncorrect;
+	private double defaultScoreCorrect;
+	private double defaultScoreIncorrect;
 
 	public Test ()
 	{
@@ -234,22 +234,22 @@ public class Test
 		this.color = color;
 	}
 
-	public int getDefaultScoreCorrect ()
+	public double getDefaultScoreCorrect ()
 	{
 		return defaultScoreCorrect;
 	}
 
-	public void setDefaultScoreCorrect (int defaultScoreCorrect)
+	public void setDefaultScoreCorrect (double defaultScoreCorrect)
 	{
 		this.defaultScoreCorrect = defaultScoreCorrect;
 	}
 
-	public int getDefaultScoreIncorrect ()
+	public double getDefaultScoreIncorrect ()
 	{
 		return defaultScoreIncorrect;
 	}
 
-	public void setDefaultScoreIncorrect (int defaultScoreIncorrect)
+	public void setDefaultScoreIncorrect (double defaultScoreIncorrect)
 	{
 		this.defaultScoreIncorrect = defaultScoreIncorrect;
 	}

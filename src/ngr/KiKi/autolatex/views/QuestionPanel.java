@@ -8,21 +8,25 @@ package ngr.KiKi.autolatex.views;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.Arrays;
 import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import net.miginfocom.layout.CC;
 import net.miginfocom.layout.LC;
 import net.miginfocom.swing.MigLayout;
+import ngr.KiKi.autolatex.AMCAutoLateX;
 import ngr.KiKi.autolatex.data.Answer;
 import ngr.KiKi.autolatex.data.Question;
 import ngr.KiKi.autolatex.utils.Utils;
@@ -81,6 +85,9 @@ public class QuestionPanel extends javax.swing.JPanel
 		
 		jTextAreaText.setText (question.toString ());
 		jTextAreaText.getDocument ().addDocumentListener (dc);
+		
+		jTextFieldShortName.setText (question.getShortName ());
+		jTextFieldShortName.getDocument ().addDocumentListener (dc);
 		
 		jTextFieldNbLines.setText ("" + question.getNbLines ());
 		jTextFieldNbLines.getDocument ().addDocumentListener (dc);
@@ -152,6 +159,7 @@ public class QuestionPanel extends javax.swing.JPanel
 			question.setGroup ((String) jComboBoxGroup.getSelectedItem ());
 			question.setText (jTextAreaText.getText ());
 			question.setType (Question.TYPE.getType ((String) jComboBoxType.getSelectedItem ()));
+			question.setShortName (jTextFieldShortName.getText ());
 			try
 			{
 				question.setNbLines (Integer.valueOf (jTextFieldNbLines.getText ()));
@@ -193,6 +201,8 @@ public class QuestionPanel extends javax.swing.JPanel
         jPanelNbLines = new javax.swing.JPanel();
         jTextFieldNbLines = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextFieldShortName = new javax.swing.JTextField();
         jScrollPaneAnswers = new javax.swing.JScrollPane();
         jPanelAnswers = new javax.swing.JPanel();
         jButtonAddAnswer = new javax.swing.JButton();
@@ -222,7 +232,14 @@ public class QuestionPanel extends javax.swing.JPanel
 
         jLabel1.setText("Type");
 
-        jButtonAddPicture.setText("Ajouter photo");
+        jButtonAddPicture.setText("Ajouter image");
+        jButtonAddPicture.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                jButtonAddPictureActionPerformed(evt);
+            }
+        });
 
         jTextFieldNbLines.setText("2");
 
@@ -244,23 +261,28 @@ public class QuestionPanel extends javax.swing.JPanel
                 .addComponent(jTextFieldNbLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jLabel3.setText("Nom raccourci");
+
         javax.swing.GroupLayout jPanelConfigLayout = new javax.swing.GroupLayout(jPanelConfig);
         jPanelConfig.setLayout(jPanelConfigLayout);
         jPanelConfigLayout.setHorizontalGroup(
             jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelConfigLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelConfigLayout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBoxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 101, Short.MAX_VALUE)
                         .addComponent(jButtonAddPicture))
                     .addGroup(jPanelConfigLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanelNbLines, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(jTextFieldShortName, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(jPanelNbLines, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelConfigLayout.setVerticalGroup(
             jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,9 +292,13 @@ public class QuestionPanel extends javax.swing.JPanel
                         .addComponent(jComboBoxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1))
                     .addComponent(jButtonAddPicture))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelNbLines, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 61, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelConfigLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jTextFieldShortName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 49, Short.MAX_VALUE))
         );
 
         jScrollPaneAnswers.setBorder(javax.swing.BorderFactory.createTitledBorder("Réponses"));
@@ -360,7 +386,7 @@ public class QuestionPanel extends javax.swing.JPanel
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneAnswers, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                .addComponent(jScrollPaneAnswers, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelConfig, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -445,6 +471,20 @@ public class QuestionPanel extends javax.swing.JPanel
 		}
     }//GEN-LAST:event_jComboBoxTypeActionPerformed
 
+    private void jButtonAddPictureActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_jButtonAddPictureActionPerformed
+    {//GEN-HEADEREND:event_jButtonAddPictureActionPerformed
+        JFileChooser chooser = new JFileChooser ();
+		chooser.setFileFilter (new FileNameExtensionFilter ("Fichier Image ("+Utils.PIC_EXTENSIONS+")", Utils.PIC_EXTENSIONS, Utils.PIC_EXTENSIONS.toUpperCase ()));
+		chooser.setCurrentDirectory (new File (AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH) == null ? "" : AMCAutoLateX.properties.getProperty (Utils.PROPERTIES_RECENT_PATH)));
+		chooser.setAcceptAllFileFilterUsed (false);
+
+		if (chooser.showOpenDialog (this) != JFileChooser.OPEN_DIALOG)
+			return;
+
+		File file = chooser.getSelectedFile ();
+		AMCAutoLateX.properties.setProperty (Utils.PROPERTIES_RECENT_PATH, file.getParent ());
+    }//GEN-LAST:event_jButtonAddPictureActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAddAnswer;
@@ -454,6 +494,7 @@ public class QuestionPanel extends javax.swing.JPanel
     private javax.swing.JComboBox jComboBoxType;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelAnswers;
     private javax.swing.JPanel jPanelConfig;
@@ -462,5 +503,6 @@ public class QuestionPanel extends javax.swing.JPanel
     private javax.swing.JScrollPane jScrollPaneAnswers;
     private javax.swing.JTextArea jTextAreaText;
     private javax.swing.JTextField jTextFieldNbLines;
+    private javax.swing.JTextField jTextFieldShortName;
     // End of variables declaration//GEN-END:variables
 }

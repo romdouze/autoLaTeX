@@ -8,18 +8,18 @@ package ngr.KiKi.autolatex.utils;
 import java.util.*;
 
 /**
- * Classe complementaire du J2SDK sur la manipulation de chaines de caractéres Permet nottament de supprimer les accents d'une chaine de caractères
+ * Classe complémentaire du J2SDK sur la manipulation de chaines de caractères. Permet notamment de supprimer les accents d'une chaîne de caractères
  *
  */
 public abstract class StringOperation
 {
 
 	/**
-	 * Index du 1er caractere accentué *
+	 * Index du permier caractère accentué *
 	 */
 	private static final int MIN = 192;
 	/**
-	 * Index du dernier caractere accentué *
+	 * Index du dernier caractère accentué *
 	 */
 	private static final int MAX = 255;
 	/**
@@ -28,7 +28,7 @@ public abstract class StringOperation
 	private static final List<String> map = initMap ();
 
 	/**
-	 * Initialisation du tableau de correspondance entre les caractéres accentués et leur homologues non accentués
+	 * Initialisation du tableau de correspondance entre les caractères accentués et leur homologues non accentués
 	 */
 	private static List<String> initMap ()
 	{
@@ -197,10 +197,10 @@ public abstract class StringOperation
 	}
 
 	/**
-	 * Transforme une chaine pouvant contenir des accents dans une version sans accent
+	 * Transforme une chaîne pouvant contenir des accents dans une version sans accent
 	 *
-	 * @param chaine Chaine a convertir sans accent
-	 * @return Chaine dont les accents ont été supprimé
+	 * @param chaine Chaîne à convertir sans accent
+	 * @return Chaîne dont les accents ont été supprimés
 	 *
 	 */
 	public static java.lang.String normalize (java.lang.String chaine)

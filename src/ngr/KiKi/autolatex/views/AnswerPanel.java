@@ -6,7 +6,6 @@
 package ngr.KiKi.autolatex.views;
 
 import java.awt.event.ActionEvent;
-import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
