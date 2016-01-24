@@ -218,4 +218,20 @@ public abstract class StringOperation
 		}
 		return Result.toString ();
 	}
+
+	private final Map<String, String> texMap = new HashMap<String, String> ()
+	{
+		{
+			put ("&", "\\&");
+			put ("%", "\\%");
+			put ("$", "\\$");
+			put ("#", "\\#");
+			put ("_", "\\_");
+			put ("{", "\\{");
+			put ("}", "\\}");
+			put ("~", "\\textasciitilde");
+			put ("^", "\\textasciicircum");
+			put ("\\", "\textbackslash");
+		}
+	};
 }

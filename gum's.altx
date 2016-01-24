@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<amc-root>
+    <settings>
+        <title>QCM éclair !</title>
+        <description>Répondre aux questions en grisant soigneusement et complétement la ou les bonnes cases. N'oubliez pas d'indiquer votre nom dans l'emplacement prévu.
+Bonnes réponses : 1 point.
+[[Au moins une mauvaise réponse : -0,5 point.]](à voir)
+Pas de réponse : 0 point.
+Aucun document n'est autorisé.
+L'usage de la calculatrice est interdit.
+Durée : 15 min.
+Bon courage!</description>
+        <shuffle>false</shuffle>
+        <columns>2</columns>
+        <none>false</none>
+        <none-text>Aucune des réponses ci-dessus</none-text>
+        <blocks>false</blocks>
+        <format>A4</format>
+        <code>0</code>
+        <code-text>Coder votre numéro étudiant</code-text>
+        <language>FR</language>
+        <question-text>Question</question-text>
+        <name-text>Nom et prénom</name-text>
+        <even-pages>true</even-pages>
+        <blank-page>false</blank-page>
+        <color>Rouge</color>
+        <default-score-correct>1</default-score-correct>
+        <default-score-incorrect>-5</default-score-incorrect>
+    </settings>
+    <groups>
+        <group>
+            <name>Défaut</name>
+            <color>Noir</color>
+        </group>
+    </groups>
+    <questions>
+        <question>
+            <text>Le noyau et l'électron d'un atome d'hydrogène sont séparés par :</text>
+            <type>Multiple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>De l'eau</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Du vide</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>De l'air</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Nouvelle réponse</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>L'étoile la plus proche de la Terre est :</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>Le Soleil.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>La Lune.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Mars.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Dans la molécule de dihydrogène \[H_{2}\], la distance entre les noyaux d'hydrogène est 0,3 nm. L'ordre de grandeur de cette distance est :</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>\[10^{-10} m\].</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>\[10^{-8}\: m\].</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>\[0,3*10^{-9}\: m\].</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>La valeur de la vitesse de la lumière dans le vide est envion :</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>\[3,00*10^{-8}\: m.s^{-1}\].</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>\[3,00*10^{8}\: m.s^{-1}\].</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>\[3,00*10^{8}\: km.s^{-1}\].</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Un spectre lumineux est le résultat de :</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>La décomposition de la lumière.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>La recomposition de la lumière.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>La propagation de la lumière.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Un gaz excité sous faible pression émet de la lumière. Le spectre de cette lumière est :</text>
+            <type>Multiple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>Un spectre de raies.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>Un spectre continu.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Un spectre d'emission.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Une entité chimique gazeuse, sous faible pression, est éclairée par de la lumière blanche. Le spectre de la lumière ayant traversé ce gaz est :</text>
+            <type>Multiple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>Caractéristique de cette entité chimique.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>Constitué de raies noires sur fond coloré.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>Appelé spectre d'émission.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Une étoile bleue est:</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>Plus chaude qu'une étoile rouge.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>Plus froide q'une étoile rouge.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Plus proche de l'observateur qu'une étoile rouge.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Lors d'une réfraction, la lumière change :</text>
+            <type>Multiple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>De couleur.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>De direction de propagation.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>De milieu de propagation.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Le phénomène de réfraction peut se produire si :</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>Les milieux traversés sont transparents et ont des indices de réfraction égaux.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Les milieux traversés sont transparents et ont des indices de réfraction différents.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>L'angle d'incidence est nul.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Un prisme disperse de la lumière blanche car son indice de réfraction dépend de :</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>La longueur d'onde des radiations qui le traversent.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>L'angle d'incidence.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Sa forme géométrique.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>La lumière qui nous parvient d'une étoile s'est propagée dans le vide avant de pénétrer dans l'atmosphère terrestre, dont l'indice de réfraction varie en fonction de l'altitude.</text>
+            <type>Multiple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>Cette lumière se propage en ligne droite depuis l'étoile jusqu'à l'observateur.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Cette lumière se propage en ligne droite dans le vide.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>Cette lumière est réfractée par l'atmosphère terrestre.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Le noyau d'un atome de fer comportant 26 protons et 30 neutrons est caractérisé par :</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>A = 26 et Z = 30.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>A = 56 et Z = 30.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>A = 56 et Z = 26.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Un atome de cobalt Co qui a perdu 3 électrons devient :</text>
+            <type>Multiple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>un ion \[Co^{3+}\].</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>Un ion \[Co^{3-}\].</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Un cation.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>"Les atomes \[_{1}^{2}\textrm{H}\]
+ et \[_{2}^{3}\textrm{He}\]
+ :</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>Sont isotopes.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Appartiennent au même élément chimique.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Ont le même nombre de neutrons.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Un atome possédant 9 électrons a :</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>1 électron externe.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>7 électrons externes.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>9 électrons externes.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>"Un atome de formule électronique \[(K)^{2}(L)^{7}\]
+ :"</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>Tend à respecter la règle de l'octet.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>Tend à respecter la règle du duet.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Ne forme pas d'ions.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Pour obtenir la formule électronique d'un gaz noble, un atome de magnésium Mg de formule électronique \[(K)^{2}(L)^{8}(M)^{2}\]
+ peut former :</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>Le cation \[Mg^{2+}\].
+</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>L'atome Ne.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>L'anion \[Mg^{6-}\].</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Un signal périodique a obligatoirement la (les) propriété(s) suivante(s) :</text>
+            <type>Simple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>Le motif est symétrique par rapport à l'axe des abscisses.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>Le motif se répète à des intervalles de temps de même durée.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+                <answer>
+                    <text>Le motif présente alternativement des valeurs positives et négatives.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+            </answers>
+        </question>
+        <question>
+            <text>Dans une fibre optique de fibroscope, la lumière reste canalisée à l'intérieur de la fibre grâce :</text>
+            <type>Multiple</type>
+            <nb-lines>0</nb-lines>
+            <group>Défaut</group>
+            <short-name/>
+            <answers>
+                <answer>
+                    <text>à la réfraction.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>à la réflexion limite.</text>
+                    <score>0</score>
+                    <correct>false</correct>
+                </answer>
+                <answer>
+                    <text>à la réflexion totale.</text>
+                    <score>1</score>
+                    <correct>true</correct>
+                </answer>
+            </answers>
+        </question>
+    </questions>
+</amc-root>

@@ -72,6 +72,11 @@ public class TEXHandler
 			print.println ("\\vspace*{1mm}");
 			print.println ("\\end{minipage}}}\n");
 
+			print.println ("\\begin{center}\\em");
+			print.println (test.getDescription ());
+			print.println ("\\end{center}");
+			print.println ("\\vspace{1ex}");
+
 			print.println ("%%% fin de l'en-tête\n");
 
 			test.getGroups ().keySet ().stream ().forEach ((g) ->
@@ -124,7 +129,7 @@ public class TEXHandler
 		}
 		else
 		{
-			print.printf ("  \\begin{%s}{%s}\n", q.getType () == Question.TYPE.SIMPLE ? "question" : "questionmult", q.getShortNameOrGenerate ());
+			print.printf ("  \\begin{%s}{%s}\n", q.getType () == Question.TYPE.SIMPLE ? "question" : "questionmult", Utils.normalize (q.getShortNameOrGenerate ()));
 			print.println ("    " + q.getText ());
 			if (test.getColumns () > 1)
 				print.println ("    \\begin{multicols}{" + test.getColumns () + "}");

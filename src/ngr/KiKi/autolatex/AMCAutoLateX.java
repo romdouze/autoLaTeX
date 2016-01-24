@@ -13,7 +13,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.MissingResourceException;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.WindowConstants;
@@ -121,5 +123,24 @@ public class AMCAutoLateX
 		frame = new JFrameMain (test);
 		frame.setLocation (location);
 		start (frame);
+	}
+
+	public static String getVersion ()
+	{
+		System.err.println (AMCAutoLateX.class.getPackage ().getName ());
+
+		ResourceBundle rb = ResourceBundle.getBundle (AMCAutoLateX.class.getPackage ().getName () + ".resources.version");
+
+		String msg = "";
+		try
+		{
+			msg = rb.getString ("Application.buildnumber");
+		}
+		catch (MissingResourceException e)
+		{
+			System.err.println ("Token ".concat ("Application.version").concat (" not in Propertyfile!"));
+		}
+		return msg;
+
 	}
 }

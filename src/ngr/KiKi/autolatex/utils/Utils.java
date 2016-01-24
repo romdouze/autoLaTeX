@@ -6,9 +6,11 @@
 package ngr.KiKi.autolatex.utils;
 
 import java.awt.Color;
-import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import ngr.KiKi.autolatex.AMCAutoLateX;
 
 /**
  *
@@ -51,4 +53,9 @@ public class Utils
 	public final static String EXTENSION = "altx";
 	public final static String PROPERTIES_FILENAME = "AMC_AutoLaTeX.properties";
 	public final static String PROPERTIES_RECENT_PATH = "autolatex.recent-path";
+
+	public static String getVersion ()
+	{
+		return "1.0." + AMCAutoLateX.getVersion ();
+	}
 }
